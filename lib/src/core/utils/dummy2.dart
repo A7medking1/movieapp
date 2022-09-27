@@ -1,3 +1,4 @@
+/*
 
 import '../../domain/entity/genres.dart';
 import '../../domain/entity/movie_detail.dart';
@@ -45,3 +46,4 @@ List<Recommendation> recommendationDummy = [
   const Recommendation(
       backdropPath: "/ta17TltHGdZ5PZz6oUD3N5BRurb.jpg", id: 924482),
 ];
+*/
