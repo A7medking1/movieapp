@@ -5,10 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movieapp/src/presentation/controller/movies_bloc.dart';
 import 'package:movieapp/src/presentation/controller/movies_state.dart';
-import 'package:movieapp/src/presentation/screens/movie_detail_screen.dart';
+import 'package:movieapp/src/presentation/screens/movie_detail_screen/movie_detail_screen.dart';
 
 import '../../../../core/utils/api_constance.dart';
 import '../../../../core/utils/enums.dart';
+import '../../../widget/loading_spankit.dart';
 
 class NowPlayingComponent extends StatelessWidget {
   const NowPlayingComponent({
@@ -26,7 +27,7 @@ class NowPlayingComponent extends StatelessWidget {
             return const SizedBox(
               height: 400.0,
               child: Center(
-                child: CircularProgressIndicator(),
+                child: spinKit,
               ),
             );
           case RequestState.loaded:

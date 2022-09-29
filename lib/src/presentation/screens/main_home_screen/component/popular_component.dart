@@ -8,7 +8,8 @@ import 'package:shimmer/shimmer.dart';
 
 import '../../../../core/utils/api_constance.dart';
 import '../../../../core/utils/enums.dart';
-import '../../movie_detail_screen.dart';
+import '../../../widget/loading_spankit.dart';
+import '../../movie_detail_screen/movie_detail_screen.dart';
 
 class PopularComponent extends StatelessWidget {
   const PopularComponent({
@@ -25,7 +26,7 @@ class PopularComponent extends StatelessWidget {
             return const SizedBox(
               height: 170.0,
               child: Center(
-                child: CircularProgressIndicator(),
+                child: spinKit,
               ),
             );
           case RequestState.loaded:

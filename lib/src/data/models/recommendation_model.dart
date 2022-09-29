@@ -9,7 +9,7 @@ class RecommendationModel extends Recommendation {
   factory RecommendationModel.fromJson(Map<String, dynamic> json) {
     return RecommendationModel(
       id: json["id"],
-      backdropPath: json["backdrop_path"] ?? "/aHUlWRhbp2OrVVgFTlB6ns86lEp.jpg",
+      backdropPath: json["backdrop_path"],
     );
   }
 }
