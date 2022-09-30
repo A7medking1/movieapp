@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:movieapp/src/presentation/controller/movie_detail_bloc.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../../core/services/services_locator.dart';
 import '../../../core/utils/api_constance.dart';
 import '../../../core/utils/enums.dart';
@@ -23,7 +24,8 @@ class MovieDetailScreen extends StatelessWidget {
       create: (context) => sl<MovieDetailBloc>()
         ..add(GetMovieDetailEvent(id))
         ..add(GetMovieRecommendationEvent(id))
-        ..add(GetCreditsEvent(id)),
+        ..add(GetCreditsEvent(id))
+        ..add(GetVideoEvent(id)),
       child: const Scaffold(
         body: MovieDetailContent(),
       ),
@@ -48,10 +50,27 @@ class MovieDetailContent extends StatelessWidget {
           case RequestState.loaded:
             return CustomScrollView(
               key: const Key("state.movieDetail!.title"),
-              slivers:
-              [
+              slivers: [
                 SliverAppBar(
                   pinned: true,
+                  actions: [
+                    Padding(
+                      padding: const EdgeInsets.only(right: 30),
+                      child: IconButton(
+                        icon: const Icon(
+                          Icons.play_circle_fill_rounded,
+                          size: 40,
+                        ),
+                        color: Colors.blue,
+                        onPressed: () async {
+                          final  String test = ApiConstance.youtubePath(state.videos[0].key);
+                          if (await canLaunchUrl(Uri.parse(test))) {
+                            await launchUrl(Uri.parse(test));
+                          }
+                        },
+                      ),
+                    ),
+                  ],
                   expandedHeight: 250.0,
                   flexibleSpace: FlexibleSpaceBar(
                     background: FadeIn(
@@ -251,4 +270,3 @@ class MovieDetailContent extends StatelessWidget {
     }
   }
 }
-

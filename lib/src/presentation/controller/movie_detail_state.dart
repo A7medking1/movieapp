@@ -13,6 +13,10 @@ class MovieDetailState extends Equatable {
   final RequestState creditsState;
   final String creditsMessage;
 
+  final List<Videos> videos;
+  final RequestState videoState;
+  final String videoMessage;
+
   const MovieDetailState({
     this.movieDetail,
     this.movieDetailRequestState = RequestState.loading,
@@ -23,6 +27,9 @@ class MovieDetailState extends Equatable {
     this.credits = const [],
     this.creditsState = RequestState.loading,
     this.creditsMessage = "",
+    this.videos = const [],
+    this.videoState = RequestState.loading,
+    this.videoMessage = "",
   });
 
   MovieDetailState copWith({
@@ -35,23 +42,32 @@ class MovieDetailState extends Equatable {
     List<Credits>? credits,
     RequestState? creditsState,
     String? creditsMessage,
+    List<Videos>? videos,
+    RequestState? videoState,
+    String? videoMessage,
   }) {
     return MovieDetailState(
-        movieDetail: movieDetail ?? this.movieDetail,
-        movieDetailRequestState:
-            movieDetailRequestState ?? this.movieDetailRequestState,
-        movieDetailMessage: movieDetailMessage ?? this.movieDetailMessage,
-        recommendation: recommendation ?? this.recommendation,
-        recommendationState: recommendationState ?? this.recommendationState,
-        recommendationMessage:
-            recommendationMessage ?? this.recommendationMessage,
-        credits: credits ?? this.credits,
-        creditsState: creditsState ?? this.creditsState,
-        creditsMessage: creditsMessage ?? this.creditsMessage);
+      movieDetail: movieDetail ?? this.movieDetail,
+      movieDetailRequestState:
+      movieDetailRequestState ?? this.movieDetailRequestState,
+      movieDetailMessage: movieDetailMessage ?? this.movieDetailMessage,
+      recommendation: recommendation ?? this.recommendation,
+      recommendationState: recommendationState ?? this.recommendationState,
+      recommendationMessage:
+      recommendationMessage ?? this.recommendationMessage,
+      credits: credits ?? this.credits,
+      creditsState: creditsState ?? this.creditsState,
+      creditsMessage: creditsMessage ?? this.creditsMessage,
+
+      videos: videos ?? this.videos,
+      videoState: videoState ?? this.videoState,
+      videoMessage: videoMessage ?? this.videoMessage,
+    );
   }
 
   @override
-  List<Object?> get props => [
+  List<Object?> get props =>
+      [
         movieDetail,
         movieDetailRequestState,
         movieDetailMessage,
@@ -61,5 +77,8 @@ class MovieDetailState extends Equatable {
         credits,
         creditsState,
         creditsMessage,
+        videos,
+        videoState,
+        videoMessage,
       ];
 }

@@ -6,10 +6,13 @@ import 'package:movieapp/src/domain/entity/credits.dart';
 import 'package:movieapp/src/domain/entity/movie.dart';
 import 'package:movieapp/src/domain/entity/movie_detail.dart';
 import 'package:movieapp/src/domain/entity/recommendations.dart';
+import 'package:movieapp/src/domain/entity/videos.dart';
 import 'package:movieapp/src/domain/repository/base_movie_repository.dart';
 import 'package:movieapp/src/domain/usecases/get_credits.dart';
 import 'package:movieapp/src/domain/usecases/get_movie_detail.dart';
 import 'package:movieapp/src/domain/usecases/get_movie_recommendations.dart';
+
+import '../../domain/usecases/get_videos.dart';
 
 class MovieRepository extends BaseMovieRepository
 {
@@ -74,6 +77,17 @@ class MovieRepository extends BaseMovieRepository
   @override
   Future<Either<Failure, List<Credits>>> getCredits(CreditsParameters parameters)async {
     final result = await movieRemoteDataSource.getCredits(parameters);
+
+    try {
+      return Right(result);
+    } on ServerException catch (failure) {
+      return Left(ServerFailure(failure.errorMessageModel.statusMessage));
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<Videos>>> getVideos(VideoParameters parameters) async{
+    final result = await movieRemoteDataSource.getVideos(parameters);
 
     try {
       return Right(result);

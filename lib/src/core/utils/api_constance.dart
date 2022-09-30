@@ -21,6 +21,14 @@ class ApiConstance {
   static String creditsPath(int id) =>
       "$baseUrl/movie/$id/credits?api_key=$apiKey";
 
+
+  static String videoPath(int id) =>
+      "$baseUrl//movie/$id/videos?api_key=$apiKey";
+
+  static String youtubePath(String key) =>
+      "https://www.youtube.com/watch?v=$key";
+
+
   static const baseImageUrl = "https://image.tmdb.org/t/p/w500";
 
   static  String imageUrl(String path) => "$baseImageUrl$path";

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:movieapp/src/presentation/controller/movies_bloc.dart';
 import 'package:movieapp/src/presentation/controller/movies_event.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../core/services/services_locator.dart';
 import 'component/now_playing_component.dart';
@@ -42,8 +43,12 @@ class MainMoviesScreen extends StatelessWidget {
                       ),
                     ),
                     InkWell(
-                      onTap: () {
+                      onTap: () async{
                         /// TODO : NAVIGATION TO POPULAR SCREEN
+                        const String test = "https://www.youtube.com/watch?v=qZVTkn2NjS0";
+                        if(await canLaunchUrl(Uri.parse(test))){
+                          await launchUrl(Uri.parse(test));
+                        }
                       },
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
