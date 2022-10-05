@@ -1,12 +1,13 @@
 import 'package:animate_do/animate_do.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movieapp/src/core/utils/app_constance.dart';
+import 'package:movieapp/src/presentation/widget/cached_image_widget.dart';
+import 'package:movieapp/src/presentation/widget/custom_text.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../../../core/utils/api_constance.dart';
-import '../../../controller/movie_detail_bloc.dart';
+import '../../../controller/movie_detail_bloc/movie_detail_bloc.dart';
 
 class CreditsComponent extends StatelessWidget {
   const CreditsComponent({Key? key}) : super(key: key);
@@ -40,46 +41,41 @@ class CreditsComponent extends StatelessWidget {
                           from: 20,
                           duration: const Duration(milliseconds: 500),
                           child: ClipRRect(
-                            child: CachedNetworkImage(
-                              imageUrl: credit.profilePath != null
-                                  ? ApiConstance.imageUrl(credit.profilePath!)
-                                  : AppConstance.errorImage,
-                              imageBuilder: (context, imageBuilder) {
-                                return Container(
-                                  width: 100,
-                                  height: 100,
-                                  decoration: BoxDecoration(
-                                    borderRadius: const BorderRadius.all(
-                                        Radius.circular(100)),
-                                    image: DecorationImage(
-                                      image: imageBuilder,
-                                      fit: BoxFit.fill,
-                                    ),
-                                  ),
-                                );
-                              },
-                              placeholder: (context, url) => Shimmer.fromColors(
-                                baseColor: Colors.grey[850]!,
-                                highlightColor: Colors.grey[800]!,
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    color: Colors.black,
-                                    borderRadius: BorderRadius.circular(8.0),
+                              child: CachedImages(
+                            width: 100,
+                            imageUrl: credit.profilePath != null
+                                ? ApiConstance.imageUrl(credit.profilePath!)
+                                : AppConstance.errorImage,
+                            imageBuilder: (context, imageBuilder) {
+                              return Container(
+                                width: 100,
+                                height: 100,
+                                decoration: BoxDecoration(
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(80)),
+                                  image: DecorationImage(
+                                    image: imageBuilder,
+                                    fit: BoxFit.fill,
                                   ),
                                 ),
+                              );
+                            },
+                            placeholder: (context, url) => Shimmer.fromColors(
+                              baseColor: Colors.grey[850]!,
+                              highlightColor: Colors.grey[800]!,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.black,
+                                  borderRadius: BorderRadius.circular(8.0),
+                                ),
                               ),
-                              errorWidget: (context, url, error) =>
-                              const Icon(Icons.error),
                             ),
-                          ),
+                          )),
                         ),
                       ),
                       Center(
-                        child: Text(
-                          credit.originalName,
-                          style: const TextStyle(
-                            color: Colors.white,
-                          ),
+                        child: CustomText(
+                          text: credit.originalName,
                         ),
                       ),
                     ],

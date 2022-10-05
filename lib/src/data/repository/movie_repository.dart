@@ -12,6 +12,7 @@ import 'package:movieapp/src/domain/usecases/get_credits.dart';
 import 'package:movieapp/src/domain/usecases/get_movie_detail.dart';
 import 'package:movieapp/src/domain/usecases/get_movie_recommendations.dart';
 
+import '../../domain/usecases/get_popular_movies.dart';
 import '../../domain/usecases/get_videos.dart';
 
 class MovieRepository extends BaseMovieRepository
@@ -32,8 +33,8 @@ class MovieRepository extends BaseMovieRepository
   }
 
   @override
-  Future<Either<Failure, List<Movie>>> getPopularMovies() async {
-    final result = await movieRemoteDataSource.getPopularMovie();
+  Future<Either<Failure, List<Movie>>> getPopularMovies(PopularMovieParameters parameters) async {
+    final result = await movieRemoteDataSource.getPopularMovie(parameters);
 
     try {
       return Right(result);

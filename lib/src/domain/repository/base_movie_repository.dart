@@ -10,12 +10,13 @@ import 'package:movieapp/src/domain/usecases/get_movie_recommendations.dart';
 import '../../core/error/failure.dart';
 import '../entity/movie.dart';
 import '../usecases/get_credits.dart';
+import '../usecases/get_popular_movies.dart';
 import '../usecases/get_videos.dart';
 
 abstract class BaseMovieRepository {
   Future<Either<Failure,List<Movie>>> getNowPlayingMovies();
 
-  Future<Either<Failure,List<Movie>>> getPopularMovies();
+  Future<Either<Failure,List<Movie>>> getPopularMovies(PopularMovieParameters parameters);
 
   Future<Either<Failure,List<Movie>>>  getTopRatedMovies();
 

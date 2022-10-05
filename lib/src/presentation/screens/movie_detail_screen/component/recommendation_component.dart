@@ -1,12 +1,13 @@
 import 'package:animate_do/animate_do.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movieapp/src/core/functions/navigator.dart';
 import 'package:movieapp/src/core/utils/app_constance.dart';
-import 'package:shimmer/shimmer.dart';
+import 'package:movieapp/src/presentation/screens/movie_detail_screen/movie_detail_screen.dart';
+import 'package:movieapp/src/presentation/widget/cached_image_widget.dart';
 
 import '../../../../core/utils/api_constance.dart';
-import '../../../controller/movie_detail_bloc.dart';
+import '../../../controller/movie_detail_bloc/movie_detail_bloc.dart';
 
 class RecommendationComponent extends StatelessWidget {
   const RecommendationComponent({
@@ -21,32 +22,25 @@ class RecommendationComponent extends StatelessWidget {
           padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 24.0),
           sliver: SliverGrid(
             delegate: SliverChildBuilderDelegate(
-                  (context, index) {
+              (context, index) {
                 final recommendation = state.recommendation[index];
-                return FadeInUp(
-                  from: 20,
-                  duration: const Duration(milliseconds: 500),
-                  child: ClipRRect(
-                    borderRadius: const BorderRadius.all(Radius.circular(4.0)),
-                    child: CachedNetworkImage(
-                      imageUrl: recommendation.backdropPath != null ? ApiConstance.imageUrl(recommendation.backdropPath!) : AppConstance.errorImage,
-                      placeholder: (context, url) =>
-                          Shimmer.fromColors(
-                            baseColor: Colors.grey[850]!,
-                            highlightColor: Colors.grey[800]!,
-                            child: Container(
-                              height: 170.0,
-                              width: 120.0,
-                              decoration: BoxDecoration(
-                                color: Colors.black,
-                                borderRadius: BorderRadius.circular(8.0),
-                              ),
-                            ),
-                          ),
-                      errorWidget: (context, url, error) =>
-                      const Icon(Icons.error),
-                      height: 180.0,
-                      fit: BoxFit.cover,
+                return InkWell(
+                  onTap: () => navigateTo(
+                      context: context,
+                      page: MovieDetailScreen(id: recommendation.id)),
+                  child: FadeInUp(
+                    from: 20,
+                    duration: const Duration(milliseconds: 500),
+                    child: ClipRRect(
+                      borderRadius:
+                          const BorderRadius.all(Radius.circular(4.0)),
+                      child: CachedImages(
+                        imageUrl: recommendation.backdropPath != null
+                            ? ApiConstance.imageUrl(
+                                recommendation.backdropPath!)
+                            : AppConstance.errorImage,
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
                 );

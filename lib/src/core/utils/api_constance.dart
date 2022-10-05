@@ -6,8 +6,8 @@ class ApiConstance {
   static const String nowPlayingMoviePath =
       "$baseUrl/movie/now_playing?api_key=$apiKey";
 
-  static const String popularMoviePath =
-      "$baseUrl/movie/popular?api_key=$apiKey";
+  static  String popularMoviePath(int page) =>
+      "$baseUrl/movie/popular?api_key=$apiKey&page=$page";
 
   static const String topRatedPath =
       "$baseUrl/movie/top_rated?api_key=$apiKey";

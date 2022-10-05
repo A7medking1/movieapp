@@ -1,14 +1,17 @@
 import 'package:animate_do/animate_do.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:movieapp/src/presentation/controller/movies_bloc.dart';
-import 'package:movieapp/src/presentation/controller/movies_state.dart';
+import 'package:movieapp/src/presentation/controller/movie_bloc/movies_bloc.dart';
 import 'package:movieapp/src/presentation/screens/movie_detail_screen/movie_detail_screen.dart';
+import 'package:movieapp/src/presentation/widget/cached_image_widget.dart';
+import 'package:movieapp/src/presentation/widget/custom_icon.dart';
+import 'package:movieapp/src/presentation/widget/custom_text.dart';
 
+import '../../../../core/functions/navigator.dart';
 import '../../../../core/utils/api_constance.dart';
 import '../../../../core/utils/enums.dart';
+import '../../../controller/movie_bloc/movies_state.dart';
 import '../../../widget/loading_spankit.dart';
 
 class NowPlayingComponent extends StatelessWidget {
@@ -27,7 +30,7 @@ class NowPlayingComponent extends StatelessWidget {
             return const SizedBox(
               height: 400.0,
               child: Center(
-                child: spinKit,
+                child: customLoading,
               ),
             );
           case RequestState.loaded:
@@ -45,17 +48,12 @@ class NowPlayingComponent extends StatelessWidget {
                   (item) {
                     return GestureDetector(
                       key: const Key('openMovieMinimalDetail'),
-                      onTap: () {
-                        print(item.id);
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => MovieDetailScreen(
-                              id: item.id,
-                            ),
-                          ),
-                        );
-                      },
+                      onTap: () => navigateTo(
+                        context: context,
+                        page: MovieDetailScreen(
+                          id: item.id,
+                        ),
+                      ),
                       child: Stack(
                         children: [
                           ShaderMask(
@@ -76,11 +74,12 @@ class NowPlayingComponent extends StatelessWidget {
                               );
                             },
                             blendMode: BlendMode.dstIn,
-                            child: CachedNetworkImage(
-                              height: 560.0,
+                            child: CachedImages(
+                              width: double.infinity,
                               imageUrl:
-                                  ApiConstance.imageUrl(item.backdropPath),
+                                  ApiConstance.imageUrl(item.backdropPath!),
                               fit: BoxFit.cover,
+                              height: 560.0,
                             ),
                           ),
                           Align(
@@ -93,31 +92,25 @@ class NowPlayingComponent extends StatelessWidget {
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      const Icon(
-                                        Icons.circle,
+                                      const CustomIcon(
+                                        icon: Icons.circle,
                                         color: Colors.redAccent,
                                         size: 16.0,
                                       ),
                                       const SizedBox(width: 4.0),
-                                      Text(
-                                        'Now Playing'.toUpperCase(),
-                                        style: const TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 16.0,
-                                        ),
+                                      CustomText(
+                                        text: 'Now Playing'.toUpperCase(),
+                                        fontSize: 16,
                                       ),
                                     ],
                                   ),
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.only(bottom: 16.0),
-                                  child: Text(
-                                    item.title,
+                                  child: CustomText(
+                                    text: item.title,
                                     textAlign: TextAlign.center,
-                                    style: const TextStyle(
-                                      fontSize: 24,
-                                      color: Colors.white,
-                                    ),
+                                    fontSize: 24,
                                   ),
                                 ),
                               ],

@@ -15,12 +15,13 @@ import '../../core/error/exception.dart';
 import '../../core/network/error_message_model.dart';
 import '../../core/services/services_locator.dart';
 import '../../core/utils/api_constance.dart';
+import '../../domain/usecases/get_popular_movies.dart';
 
 abstract class BaseRemoteMovieDataSource
 {
   Future<List<MovieModel>> getNowPlayingMovie();
 
-  Future<List<MovieModel>> getPopularMovie();
+  Future<List<MovieModel>> getPopularMovie(PopularMovieParameters parameters);
 
   Future<List<MovieModel>> getTopRatedMovie();
 
@@ -31,8 +32,6 @@ abstract class BaseRemoteMovieDataSource
   Future<List<CreditsModel>> getCredits(CreditsParameters parameters);
 
   Future<List<VideoModel>> getVideos(VideoParameters parameters);
-
-
 }
 
 class MovieRemoteDataSource extends BaseRemoteMovieDataSource {
@@ -52,8 +51,8 @@ class MovieRemoteDataSource extends BaseRemoteMovieDataSource {
   }
 
   @override
-  Future<List<MovieModel>> getPopularMovie() async {
-    final response = await sl<Dio>().get(ApiConstance.popularMoviePath);
+  Future<List<MovieModel>> getPopularMovie(PopularMovieParameters parameters) async {
+    final response = await sl<Dio>().get(ApiConstance.popularMoviePath(parameters.page));
 
     if (response.statusCode == 200) {
       return List<MovieModel>.from((response.data["results"] as List).map(

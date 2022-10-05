@@ -10,8 +10,8 @@ import 'package:movieapp/src/domain/usecases/get_movie_detail.dart';
 import 'package:movieapp/src/domain/usecases/get_movie_recommendations.dart';
 import 'package:movieapp/src/domain/usecases/get_videos.dart';
 
-import '../../domain/entity/credits.dart';
-import '../../domain/entity/videos.dart';
+import '../../../domain/entity/credits.dart';
+import '../../../domain/entity/videos.dart';
 
 part 'movie_detail_event.dart';
 
