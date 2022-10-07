@@ -3,6 +3,7 @@ import 'package:get_it/get_it.dart';
 import 'package:movieapp/src/data/datasource/movie_remote_data_source.dart';
 import 'package:movieapp/src/data/repository/movie_repository.dart';
 import 'package:movieapp/src/domain/repository/base_movie_repository.dart';
+import 'package:movieapp/src/domain/usecases/credits_movie.dart';
 import 'package:movieapp/src/domain/usecases/get_movie_detail.dart';
 import 'package:movieapp/src/domain/usecases/get_movie_recommendations.dart';
 import 'package:movieapp/src/domain/usecases/get_now_playing_movies.dart';
@@ -25,7 +26,7 @@ class ServicesLocator {
 
     /// Bloc
     sl.registerFactory(() => MoviesBloc(sl(),sl(),sl()));
-    sl.registerFactory(() => MovieDetailBloc(sl() , sl() , sl() , sl()));
+    sl.registerFactory(() => MovieDetailBloc(sl() , sl() , sl() , sl() , sl()));
     sl.registerFactory(() => MovieCubit(sl()));
 
     /// Use Cases
@@ -36,6 +37,7 @@ class ServicesLocator {
     sl.registerLazySingleton(() => GetMovieRecommendationsUseCase(sl()));
     sl.registerLazySingleton(() => GetCreditsUseCase(sl()));
     sl.registerLazySingleton(() => GetVideosUseCase(sl()));
+    sl.registerLazySingleton(() => GetCreditsMovieUseCase(sl()));
 
     /// Repository
     sl.registerLazySingleton<BaseMovieRepository>(() => MovieRepository(sl()));

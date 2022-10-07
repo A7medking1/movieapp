@@ -15,7 +15,6 @@ class MainMoviesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("hello");
     return BlocProvider(
       create: (context) => sl<MoviesBloc>()
         ..add(GetNowPlayingMoviesEvent())

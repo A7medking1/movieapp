@@ -3,14 +3,12 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movieapp/src/core/functions/navigator.dart';
-import 'package:movieapp/src/core/utils/app_constance.dart';
-import 'package:movieapp/src/presentation/widget/cached_image_widget.dart';
-import 'package:movieapp/src/presentation/widget/custom_icon.dart';
 import 'package:movieapp/src/presentation/widget/custom_text.dart';
 
 import '../../domain/entity/movie.dart';
 import '../controller/movie_cubit.dart';
 import '../widget/loading_spankit.dart';
+import '../widget/movie_data_card.dart';
 import 'movie_detail_screen/movie_detail_screen.dart';
 
 class PopularMovieSeeMore extends StatefulWidget {
@@ -74,7 +72,7 @@ class _PopularMovieSeeMoreState extends State<PopularMovieSeeMore> {
                 onTap: () => navigateTo(
                     context: context,
                     page: MovieDetailScreen(id: movie[index].id)),
-                child: _movie(movie[index], context),
+                child:  MovieDataCard(movie: movie[index],),
               );
             } else {
               Timer(const Duration(milliseconds: 30), () {
@@ -95,100 +93,6 @@ class _PopularMovieSeeMoreState extends State<PopularMovieSeeMore> {
     );
   }
 
-  Widget _movie(Movie movie, BuildContext context) {
-    return Card(
-      elevation: 100,
-      clipBehavior: Clip.antiAliasWithSaveLayer,
-      color: Colors.grey.shade900,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(
-            height: 120,
-            child: CachedImages(
-              imageUrl: movie.backdropPath != null
-                  ? "https://image.tmdb.org/t/p/w500${movie.backdropPath}"
-                  : AppConstance.errorImage,
-              fit: BoxFit.cover,
-            ),
-          ),
-          const SizedBox(
-            width: 10,
-          ),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsetsDirectional.only(top: 12),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        child: CustomText(
-                          text: movie.title,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          fontSize: 17.0,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Row(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 2.0,
-                          horizontal: 8.0,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.grey[800],
-                          borderRadius: BorderRadius.circular(4.0),
-                        ),
-                        child: CustomText(
-                          text: movie.releaseDate.split('-')[0],
-                          fontSize: 16.0,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      const SizedBox(width: 16.0),
-                      Row(
-                        children: [
-                          const CustomIcon(
-                            icon: Icons.star,
-                            color: Colors.amber,
-                            size: 20.0,
-                          ),
-                          const SizedBox(width: 4.0),
-                          CustomText(
-                            text: (movie.voteAverage).toStringAsFixed(1),
-                            fontSize: 16.0,
-                            color: Colors.grey,
-                            fontWeight: FontWeight.w500,
-                            letterSpacing: 1.2,
-                          )
-                        ],
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  CustomText(
-                      text: movie.overview,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(color: Colors.grey[500]))
-                ],
-              ),
-            ),
-          ),
-          const SizedBox(height: 20.0),
-        ],
-      ),
-    );
-  }
+
 }
+

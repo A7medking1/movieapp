@@ -6,6 +6,7 @@ import 'package:movieapp/src/data/models/recommendation_model.dart';
 import 'package:movieapp/src/data/models/videos_model.dart';
 import 'package:movieapp/src/domain/entity/movie_detail.dart';
 import 'package:movieapp/src/domain/entity/recommendations.dart';
+import 'package:movieapp/src/domain/usecases/credits_movie.dart';
 import 'package:movieapp/src/domain/usecases/get_credits.dart';
 import 'package:movieapp/src/domain/usecases/get_movie_detail.dart';
 import 'package:movieapp/src/domain/usecases/get_movie_recommendations.dart';
@@ -32,6 +33,9 @@ abstract class BaseRemoteMovieDataSource
   Future<List<CreditsModel>> getCredits(CreditsParameters parameters);
 
   Future<List<VideoModel>> getVideos(VideoParameters parameters);
+
+  Future<List<MovieModel>> getCreditsMovie(CreditsMovieParameters parameters);
+
 }
 
 class MovieRemoteDataSource extends BaseRemoteMovieDataSource {
@@ -130,6 +134,21 @@ class MovieRemoteDataSource extends BaseRemoteMovieDataSource {
     if (response.statusCode == 200) {
       return List<VideoModel>.from((response.data["results"] as List).map(
             (e) => VideoModel.fromJson(e),
+      ));
+    } else {
+      throw ServerException(
+        errorMessageModel: ErrorMessageModel.fromJson(response.data),
+      );
+    }
+  }
+
+  @override
+  Future<List<MovieModel>> getCreditsMovie(CreditsMovieParameters parameters) async{
+    final response = await sl<Dio>().get(ApiConstance.creditMovies(parameters.personId));
+
+    if (response.statusCode == 200) {
+      return List<MovieModel>.from((response.data["cast"] as List).map(
+            (e) => MovieModel.fromJson(e),
       ));
     } else {
       throw ServerException(

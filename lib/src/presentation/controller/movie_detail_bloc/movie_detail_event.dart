@@ -39,3 +39,16 @@ class GetVideoEvent extends MovieDetailEvent {
   @override
   List<Object> get props => [id];
 }
+
+class GetCreditMovies extends MovieDetailEvent {
+
+  final int id;
+
+  const GetCreditMovies(this.id);
+
+
+  @override
+  List<Object> get props => [id];
+
+
+}

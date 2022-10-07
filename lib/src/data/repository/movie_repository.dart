@@ -8,6 +8,7 @@ import 'package:movieapp/src/domain/entity/movie_detail.dart';
 import 'package:movieapp/src/domain/entity/recommendations.dart';
 import 'package:movieapp/src/domain/entity/videos.dart';
 import 'package:movieapp/src/domain/repository/base_movie_repository.dart';
+import 'package:movieapp/src/domain/usecases/credits_movie.dart';
 import 'package:movieapp/src/domain/usecases/get_credits.dart';
 import 'package:movieapp/src/domain/usecases/get_movie_detail.dart';
 import 'package:movieapp/src/domain/usecases/get_movie_recommendations.dart';
@@ -15,8 +16,7 @@ import 'package:movieapp/src/domain/usecases/get_movie_recommendations.dart';
 import '../../domain/usecases/get_popular_movies.dart';
 import '../../domain/usecases/get_videos.dart';
 
-class MovieRepository extends BaseMovieRepository
-{
+class MovieRepository extends BaseMovieRepository {
   final BaseRemoteMovieDataSource movieRemoteDataSource;
 
   MovieRepository(this.movieRemoteDataSource);
@@ -33,7 +33,8 @@ class MovieRepository extends BaseMovieRepository
   }
 
   @override
-  Future<Either<Failure, List<Movie>>> getPopularMovies(PopularMovieParameters parameters) async {
+  Future<Either<Failure, List<Movie>>> getPopularMovies(
+      PopularMovieParameters parameters) async {
     final result = await movieRemoteDataSource.getPopularMovie(parameters);
 
     try {
@@ -55,7 +56,8 @@ class MovieRepository extends BaseMovieRepository
   }
 
   @override
-  Future<Either<Failure, MovieDetail>> getMovieDetails(MovieDetailParameter parameter)async {
+  Future<Either<Failure, MovieDetail>> getMovieDetails(
+      MovieDetailParameter parameter) async {
     final result = await movieRemoteDataSource.getMovieDetails(parameter);
 
     try {
@@ -66,7 +68,8 @@ class MovieRepository extends BaseMovieRepository
   }
 
   @override
-  Future<Either<Failure, List<Recommendation>>> getRecommendations(RecommendationsParameters parameters) async{
+  Future<Either<Failure, List<Recommendation>>> getRecommendations(
+      RecommendationsParameters parameters) async {
     final result = await movieRemoteDataSource.getRecommendations((parameters));
     try {
       return Right(result);
@@ -76,7 +79,8 @@ class MovieRepository extends BaseMovieRepository
   }
 
   @override
-  Future<Either<Failure, List<Credits>>> getCredits(CreditsParameters parameters)async {
+  Future<Either<Failure, List<Credits>>> getCredits(
+      CreditsParameters parameters) async {
     final result = await movieRemoteDataSource.getCredits(parameters);
 
     try {
@@ -87,8 +91,21 @@ class MovieRepository extends BaseMovieRepository
   }
 
   @override
-  Future<Either<Failure, List<Videos>>> getVideos(VideoParameters parameters) async{
+  Future<Either<Failure, List<Videos>>> getVideos(
+      VideoParameters parameters) async {
     final result = await movieRemoteDataSource.getVideos(parameters);
+
+    try {
+      return Right(result);
+    } on ServerException catch (failure) {
+      return Left(ServerFailure(failure.errorMessageModel.statusMessage));
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<Movie>>> getCreditsMovie(
+      CreditsMovieParameters parameters) async {
+    final result = await movieRemoteDataSource.getCreditsMovie(parameters);
 
     try {
       return Right(result);

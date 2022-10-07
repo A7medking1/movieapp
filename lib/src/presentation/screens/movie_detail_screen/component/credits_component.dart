@@ -1,7 +1,9 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movieapp/src/core/functions/navigator.dart';
 import 'package:movieapp/src/core/utils/app_constance.dart';
+import 'package:movieapp/src/presentation/screens/credit_movies_screen.dart';
 import 'package:movieapp/src/presentation/widget/cached_image_widget.dart';
 import 'package:movieapp/src/presentation/widget/custom_text.dart';
 import 'package:shimmer/shimmer.dart';
@@ -15,6 +17,7 @@ class CreditsComponent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<MovieDetailBloc, MovieDetailState>(
+      buildWhen: (previous, current) => previous.credits != current.credits,
       builder: (context, state) {
         return SliverPadding(
           padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 24.0),
@@ -30,55 +33,60 @@ class CreditsComponent extends StatelessWidget {
                 itemCount: state.credits.length,
                 itemBuilder: (context, index) {
                   final credit = state.credits[index];
-                  return Column(
-                    children: [
-                      Card(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(100),
-                        ),
-                        elevation: 3,
-                        child: FadeInUp(
-                          from: 20,
-                          duration: const Duration(milliseconds: 500),
-                          child: ClipRRect(
-                              child: CachedImages(
-                            width: 100,
-                            imageUrl: credit.profilePath != null
-                                ? ApiConstance.imageUrl(credit.profilePath!)
-                                : AppConstance.errorImage,
-                            imageBuilder: (context, imageBuilder) {
-                              return Container(
-                                width: 100,
-                                height: 100,
-                                decoration: BoxDecoration(
-                                  borderRadius: const BorderRadius.all(
-                                      Radius.circular(80)),
-                                  image: DecorationImage(
-                                    image: imageBuilder,
-                                    fit: BoxFit.fill,
+                  return InkWell(
+                    onTap: (){
+                      navigateTo(context: context, page:  CreditMoviesScreen(credits: credit,));
+                    },
+                    child: Column(
+                      children: [
+                        Card(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(100),
+                          ),
+                          elevation: 3,
+                          child: FadeInUp(
+                            from: 20,
+                            duration: const Duration(milliseconds: 500),
+                            child: ClipRRect(
+                                child: CachedImages(
+                              width: 100,
+                              imageUrl: credit.profilePath != null
+                                  ? ApiConstance.imageUrl(credit.profilePath!)
+                                  : AppConstance.errorImage,
+                              imageBuilder: (context, imageBuilder) {
+                                return Container(
+                                  width: 100,
+                                  height: 100,
+                                  decoration: BoxDecoration(
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(80)),
+                                    image: DecorationImage(
+                                      image: imageBuilder,
+                                      fit: BoxFit.fill,
+                                    ),
+                                  ),
+                                );
+                              },
+                              placeholder: (context, url) => Shimmer.fromColors(
+                                baseColor: Colors.grey[850]!,
+                                highlightColor: Colors.grey[800]!,
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.black,
+                                    borderRadius: BorderRadius.circular(8.0),
                                   ),
                                 ),
-                              );
-                            },
-                            placeholder: (context, url) => Shimmer.fromColors(
-                              baseColor: Colors.grey[850]!,
-                              highlightColor: Colors.grey[800]!,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: Colors.black,
-                                  borderRadius: BorderRadius.circular(8.0),
-                                ),
                               ),
-                            ),
-                          )),
+                            )),
+                          ),
                         ),
-                      ),
-                      Center(
-                        child: CustomText(
-                          text: credit.originalName,
+                        Center(
+                          child: CustomText(
+                            text: credit.originalName,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   );
                 },
               ),

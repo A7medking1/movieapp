@@ -4,6 +4,7 @@ import 'package:movieapp/src/domain/entity/credits.dart';
 import 'package:movieapp/src/domain/entity/movie_detail.dart';
 import 'package:movieapp/src/domain/entity/recommendations.dart';
 import 'package:movieapp/src/domain/entity/videos.dart';
+import 'package:movieapp/src/domain/usecases/credits_movie.dart';
 import 'package:movieapp/src/domain/usecases/get_movie_detail.dart';
 import 'package:movieapp/src/domain/usecases/get_movie_recommendations.dart';
 
@@ -26,9 +27,9 @@ abstract class BaseMovieRepository {
 
   Future<Either<Failure,List<Credits>>> getCredits(CreditsParameters parameters);
 
-
   Future<Either<Failure,List<Videos>>> getVideos(VideoParameters parameters);
 
+  Future<Either<Failure,List<Movie>>> getCreditsMovie(CreditsMovieParameters parameters);
 
 
 }

@@ -6,7 +6,7 @@ class ApiConstance {
   static const String nowPlayingMoviePath =
       "$baseUrl/movie/now_playing?api_key=$apiKey";
 
-  static  String popularMoviePath(int page) =>
+  static String popularMoviePath(int page) =>
       "$baseUrl/movie/popular?api_key=$apiKey&page=$page";
 
   static const String topRatedPath =
@@ -21,6 +21,8 @@ class ApiConstance {
   static String creditsPath(int id) =>
       "$baseUrl/movie/$id/credits?api_key=$apiKey";
 
+  static String creditMovies(int personId) =>
+      "$baseUrl/person/$personId/movie_credits?api_key=$apiKey";
 
   static String videoPath(int id) =>
       "$baseUrl//movie/$id/videos?api_key=$apiKey";
@@ -28,9 +30,7 @@ class ApiConstance {
   static String youtubePath(String key) =>
       "https://www.youtube.com/watch?v=$key";
 
-
   static const baseImageUrl = "https://image.tmdb.org/t/p/w500";
 
-  static  String imageUrl(String path) => "$baseImageUrl$path";
-
+  static String imageUrl(String path) => "$baseImageUrl$path";
 }
