@@ -4,13 +4,17 @@ import 'package:movieapp/src/data/datasource/movie_remote_data_source.dart';
 import 'package:movieapp/src/data/repository/movie_repository.dart';
 import 'package:movieapp/src/domain/repository/base_movie_repository.dart';
 import 'package:movieapp/src/domain/usecases/credits_movie.dart';
+import 'package:movieapp/src/domain/usecases/get_genres.dart';
+import 'package:movieapp/src/domain/usecases/get_movie_by_genres.dart';
 import 'package:movieapp/src/domain/usecases/get_movie_detail.dart';
 import 'package:movieapp/src/domain/usecases/get_movie_recommendations.dart';
 import 'package:movieapp/src/domain/usecases/get_now_playing_movies.dart';
 import 'package:movieapp/src/domain/usecases/get_popular_movies.dart';
 import 'package:movieapp/src/domain/usecases/get_top_rated_movies.dart';
-import 'package:movieapp/src/presentation/controller/movie_cubit.dart';
+import 'package:movieapp/src/presentation/controller/cubit/movie_pagination_cubit.dart';
+import 'package:movieapp/src/presentation/controller/genres_bloc/genres_bloc.dart';
 import 'package:movieapp/src/presentation/controller/movie_bloc/movies_bloc.dart';
+import 'package:movieapp/src/presentation/controller/movie_by_genrec_bloc/movies_by_genres_bloc.dart';
 
 import '../../domain/usecases/get_credits.dart';
 import '../../domain/usecases/get_videos.dart';
@@ -27,7 +31,9 @@ class ServicesLocator {
     /// Bloc
     sl.registerFactory(() => MoviesBloc(sl(),sl(),sl()));
     sl.registerFactory(() => MovieDetailBloc(sl() , sl() , sl() , sl() , sl()));
-    sl.registerFactory(() => MovieCubit(sl()));
+    sl.registerFactory(() => MovieCubit(sl() , sl()));
+    sl.registerFactory(() => GenresBloc(sl()));
+    sl.registerFactory(() => MoviesByGenresBloc(sl()));
 
     /// Use Cases
     sl.registerLazySingleton(() => GetNowPlayingMoviesUseCase(sl()));
@@ -38,6 +44,8 @@ class ServicesLocator {
     sl.registerLazySingleton(() => GetCreditsUseCase(sl()));
     sl.registerLazySingleton(() => GetVideosUseCase(sl()));
     sl.registerLazySingleton(() => GetCreditsMovieUseCase(sl()));
+    sl.registerLazySingleton(() => GetGenresUseCase(sl()));
+    sl.registerLazySingleton(() => GetMoviesByGenresUseCase(sl()));
 
     /// Repository
     sl.registerLazySingleton<BaseMovieRepository>(() => MovieRepository(sl()));

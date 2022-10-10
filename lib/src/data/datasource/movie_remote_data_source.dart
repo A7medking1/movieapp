@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:movieapp/src/data/models/credits_model.dart';
+import 'package:movieapp/src/data/models/genres_model.dart';
 import 'package:movieapp/src/data/models/movie_detail_model.dart';
 import 'package:movieapp/src/data/models/movie_model.dart';
 import 'package:movieapp/src/data/models/recommendation_model.dart';
@@ -8,6 +9,7 @@ import 'package:movieapp/src/domain/entity/movie_detail.dart';
 import 'package:movieapp/src/domain/entity/recommendations.dart';
 import 'package:movieapp/src/domain/usecases/credits_movie.dart';
 import 'package:movieapp/src/domain/usecases/get_credits.dart';
+import 'package:movieapp/src/domain/usecases/get_movie_by_genres.dart';
 import 'package:movieapp/src/domain/usecases/get_movie_detail.dart';
 import 'package:movieapp/src/domain/usecases/get_movie_recommendations.dart';
 import 'package:movieapp/src/domain/usecases/get_videos.dart';
@@ -17,6 +19,7 @@ import '../../core/network/error_message_model.dart';
 import '../../core/services/services_locator.dart';
 import '../../core/utils/api_constance.dart';
 import '../../domain/usecases/get_popular_movies.dart';
+import '../../domain/usecases/get_top_rated_movies.dart';
 
 abstract class BaseRemoteMovieDataSource
 {
@@ -24,7 +27,7 @@ abstract class BaseRemoteMovieDataSource
 
   Future<List<MovieModel>> getPopularMovie(PopularMovieParameters parameters);
 
-  Future<List<MovieModel>> getTopRatedMovie();
+  Future<List<MovieModel>> getTopRatedMovie(TopRatedParameters parameters);
 
   Future<MovieDetail> getMovieDetails(MovieDetailParameter parameter);
 
@@ -35,6 +38,11 @@ abstract class BaseRemoteMovieDataSource
   Future<List<VideoModel>> getVideos(VideoParameters parameters);
 
   Future<List<MovieModel>> getCreditsMovie(CreditsMovieParameters parameters);
+
+  Future<List<GenresModel>> getGenres();
+
+  Future<List<MovieModel>> getMoviesByGenres(MovieByGenresParameters parameter);
+
 
 }
 
@@ -70,8 +78,8 @@ class MovieRemoteDataSource extends BaseRemoteMovieDataSource {
   }
 
   @override
-  Future<List<MovieModel>> getTopRatedMovie() async {
-    final response = await sl<Dio>().get(ApiConstance.topRatedPath);
+  Future<List<MovieModel>> getTopRatedMovie(TopRatedParameters parameters) async {
+    final response = await sl<Dio>().get(ApiConstance.topRatedPath(parameters.page));
 
     if (response.statusCode == 200) {
       return List<MovieModel>.from((response.data["results"] as List).map(
@@ -144,10 +152,40 @@ class MovieRemoteDataSource extends BaseRemoteMovieDataSource {
 
   @override
   Future<List<MovieModel>> getCreditsMovie(CreditsMovieParameters parameters) async{
-    final response = await sl<Dio>().get(ApiConstance.creditMovies(parameters.personId));
+    final response = await sl<Dio>().get(ApiConstance.creditMoviesPath(parameters.personId));
 
     if (response.statusCode == 200) {
       return List<MovieModel>.from((response.data["cast"] as List).map(
+            (e) => MovieModel.fromJson(e),
+      ));
+    } else {
+      throw ServerException(
+        errorMessageModel: ErrorMessageModel.fromJson(response.data),
+      );
+    }
+  }
+
+  @override
+  Future<List<GenresModel>> getGenres() async{
+    final response = await sl<Dio>().get(ApiConstance.genresPath);
+
+    if (response.statusCode == 200) {
+      return List<GenresModel>.from((response.data["genres"] as List).map(
+            (e) => GenresModel.fromJson(e),
+      ));
+    } else {
+      throw ServerException(
+        errorMessageModel: ErrorMessageModel.fromJson(response.data),
+      );
+    }
+  }
+
+  @override
+  Future<List<MovieModel>> getMoviesByGenres(MovieByGenresParameters parameter) async{
+    final response = await sl<Dio>().get(ApiConstance.movieByGenres(parameter.genresId));
+
+    if (response.statusCode == 200) {
+      return List<MovieModel>.from((response.data["results"] as List).map(
             (e) => MovieModel.fromJson(e),
       ));
     } else {

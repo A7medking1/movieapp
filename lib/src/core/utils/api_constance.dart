@@ -9,11 +9,10 @@ class ApiConstance {
   static String popularMoviePath(int page) =>
       "$baseUrl/movie/popular?api_key=$apiKey&page=$page";
 
-  static const String topRatedPath =
-      "$baseUrl/movie/top_rated?api_key=$apiKey";
+  static String topRatedPath(int page) =>
+      "$baseUrl/movie/top_rated?api_key=$apiKey&page=$page";
 
-  static String movieDetailPath(int id) =>
-      "$baseUrl/movie/$id?api_key=$apiKey";
+  static String movieDetailPath(int id) => "$baseUrl/movie/$id?api_key=$apiKey";
 
   static String recommendationsPath(int id) =>
       "$baseUrl/movie/$id/recommendations?api_key=$apiKey";
@@ -21,8 +20,13 @@ class ApiConstance {
   static String creditsPath(int id) =>
       "$baseUrl/movie/$id/credits?api_key=$apiKey";
 
-  static String creditMovies(int personId) =>
+  static String creditMoviesPath(int personId) =>
       "$baseUrl/person/$personId/movie_credits?api_key=$apiKey";
+
+  static const String genresPath = "$baseUrl/genre/movie/list?api_key=$apiKey";
+
+  static String movieByGenres( int genresId) =>
+      "$baseUrl/discover/movie?api_key=$apiKey&with_genres=$genresId";
 
   static String videoPath(int id) =>
       "$baseUrl//movie/$id/videos?api_key=$apiKey";

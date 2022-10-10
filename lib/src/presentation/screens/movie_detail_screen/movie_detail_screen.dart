@@ -39,11 +39,11 @@ class MovieDetailContent extends StatelessWidget {
   const MovieDetailContent({
     Key? key,
   }) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<MovieDetailBloc, MovieDetailState>(
       builder: (context, state) {
-        print(state.creditMovies);
         switch (state.movieDetailRequestState) {
           case RequestState.loading:
             return const Center(

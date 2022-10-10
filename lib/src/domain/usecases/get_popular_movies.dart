@@ -25,6 +25,4 @@ class PopularMovieParameters extends Equatable {
 
   @override
   List<Object> get props => [page];
-
-
 }

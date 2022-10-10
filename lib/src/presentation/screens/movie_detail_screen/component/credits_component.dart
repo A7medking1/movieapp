@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movieapp/src/core/functions/navigator.dart';
 import 'package:movieapp/src/core/utils/app_constance.dart';
-import 'package:movieapp/src/presentation/screens/credit_movies_screen.dart';
+import 'package:movieapp/src/presentation/screens/credit_movies_screen/credit_movies_screen.dart';
 import 'package:movieapp/src/presentation/widget/cached_image_widget.dart';
 import 'package:movieapp/src/presentation/widget/custom_text.dart';
 import 'package:shimmer/shimmer.dart';

@@ -11,14 +11,14 @@ import '../widget/loading_spankit.dart';
 import '../widget/movie_data_card.dart';
 import 'movie_detail_screen/movie_detail_screen.dart';
 
-class PopularMovieSeeMore extends StatefulWidget {
-  const PopularMovieSeeMore({super.key});
+class TopRatedMovieSeeMore extends StatefulWidget {
+  const TopRatedMovieSeeMore({super.key});
 
   @override
-  State<PopularMovieSeeMore> createState() => _PopularMovieSeeMoreState();
+  State<TopRatedMovieSeeMore> createState() => _TopRatedMovieSeeMore();
 }
 
-class _PopularMovieSeeMoreState extends State<PopularMovieSeeMore> {
+class _TopRatedMovieSeeMore extends State<TopRatedMovieSeeMore> {
   final scrollController = ScrollController();
   List<Movie> movie = [];
   bool isLoading = false;
@@ -27,7 +27,7 @@ class _PopularMovieSeeMoreState extends State<PopularMovieSeeMore> {
     scrollController.addListener(() {
       if (scrollController.position.atEdge) {
         if (scrollController.position.pixels != 0) {
-          BlocProvider.of<MovieCubit>(context).loadPopularMovies();
+          BlocProvider.of<MovieCubit>(context).loadTopRatedMovies();
         }
       }
     });
@@ -35,22 +35,19 @@ class _PopularMovieSeeMoreState extends State<PopularMovieSeeMore> {
 
   @override
   void dispose() {
-    context.read<MovieCubit>().popularPage = 1;
-    super.dispose();
     scrollController.dispose();
+    super.dispose();
   }
 
   @override
   void initState() {
     setupScrollController(context);
-    print(BlocProvider.of<MovieCubit>(context).popularPage);
-    BlocProvider.of<MovieCubit>(context).loadPopularMovies();
+    BlocProvider.of<MovieCubit>(context).loadTopRatedMovies();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    print("build");
     return Scaffold(
       backgroundColor: Colors.grey.shade900,
       appBar: AppBar(
@@ -58,13 +55,13 @@ class _PopularMovieSeeMoreState extends State<PopularMovieSeeMore> {
         backgroundColor: Colors.grey.shade900,
       ),
       body: BlocBuilder<MovieCubit, MovieState>(builder: (context, state) {
-        if (state is PopularMovieLoading && state.isFirstFetch) {
+        if (state is TopRatedMovieLoading && state.isFirstFetch) {
           return customLoading;
         }
-        if (state is PopularMovieLoading) {
+        if (state is TopRatedMovieLoading) {
           movie = state.oldMovie;
           isLoading = true;
-        } else if (state is PopularMovieLoaded) {
+        } else if (state is TopRatedMovieLoaded) {
           movie = state.movie;
         }
         return ListView.separated(

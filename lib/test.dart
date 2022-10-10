@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:movieapp/src/presentation/screens/main_home_screen/movies_screen.dart';
+import 'package:movieapp/src/presentation/screens/app_layout_screen.dart';
 
 class TestScreen extends StatelessWidget {
   const TestScreen({Key? key}) : super(key: key);
@@ -14,7 +14,7 @@ class TestScreen extends StatelessWidget {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const MainMoviesScreen()),
+              MaterialPageRoute(builder: (context) => const AppLayOutScreen()),
             );
           },
         ),

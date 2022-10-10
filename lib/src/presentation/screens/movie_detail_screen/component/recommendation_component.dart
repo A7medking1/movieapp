@@ -17,6 +17,7 @@ class RecommendationComponent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<MovieDetailBloc, MovieDetailState>(
+      buildWhen: (previous, current) => previous.recommendation != current.recommendation,
       builder: (context, state) {
         return SliverPadding(
           padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 24.0),

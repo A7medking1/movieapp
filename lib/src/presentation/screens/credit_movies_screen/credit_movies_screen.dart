@@ -13,8 +13,8 @@ import 'package:movieapp/src/presentation/widget/cached_image_widget.dart';
 import 'package:movieapp/src/presentation/widget/custom_text.dart';
 import 'package:movieapp/src/presentation/widget/movie_data_card.dart';
 
-import '../../core/services/services_locator.dart';
-import '../../core/utils/app_constance.dart';
+import '../../../core/services/services_locator.dart';
+import '../../../core/utils/app_constance.dart';
 
 class CreditMoviesScreen extends StatelessWidget {
   final Credits credits;
@@ -24,9 +24,10 @@ class CreditMoviesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) =>
-          sl<MovieDetailBloc>()..add(GetCreditMovies(credits.id)),
+      create: (context) => sl<MovieDetailBloc>()..add(GetCreditMovies(credits.id)),
       child: BlocBuilder<MovieDetailBloc, MovieDetailState>(
+        buildWhen: (previous, current) =>
+        previous.creditMovies != current.creditMovies,
         builder: (context, state) {
           return Scaffold(
             body: CustomScrollView(
@@ -51,7 +52,7 @@ class CreditMoviesScreen extends StatelessWidget {
                             child: BackdropFilter(
                               filter: ImageFilter.blur(sigmaX: 15, sigmaY: 10),
                               child:
-                                  Container(color: Colors.black.withOpacity(0)),
+                              Container(color: Colors.black.withOpacity(0)),
                             ),
                           ),
                           Center(
@@ -67,10 +68,10 @@ class CreditMoviesScreen extends StatelessWidget {
                                     ),
                                     CircleAvatar(
                                       backgroundImage:
-                                          CachedNetworkImageProvider(
+                                      CachedNetworkImageProvider(
                                         credits.profilePath != null
                                             ? ApiConstance.imageUrl(
-                                                credits.profilePath!)
+                                            credits.profilePath!)
                                             : AppConstance.errorImage,
                                       ),
                                       radius: 60,
@@ -108,10 +109,12 @@ class CreditMoviesScreen extends StatelessWidget {
                   padding: const EdgeInsets.fromLTRB(16.0, 20.0, 16.0, 0.0),
                   sliver: SliverList(
                     delegate: SliverChildBuilderDelegate(
-                      (BuildContext context, int index) {
+                          (BuildContext context, int index) {
                         return InkWell(
-                          onTap: (){
-                            navigateTo(context: context, page: MovieDetailScreen(id: state.creditMovies[index].id));
+                          onTap: () {
+                            navigateTo(context: context,
+                                page: MovieDetailScreen(
+                                    id: state.creditMovies[index].id));
                           },
                           child: MovieDataCard(
                             movie: state.creditMovies[index],

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movieapp/src/presentation/controller/movie_bloc/movies_bloc.dart';
+import 'package:movieapp/src/presentation/screens/top_rated_movie_see_more.dart';
 import 'package:movieapp/src/presentation/widget/see_more_widget.dart';
 
 import '../../../core/services/services_locator.dart';
@@ -15,6 +16,7 @@ class MainMoviesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("xxxxxx");
     return BlocProvider(
       create: (context) => sl<MoviesBloc>()
         ..add(GetNowPlayingMoviesEvent())
@@ -34,7 +36,7 @@ class MainMoviesScreen extends StatelessWidget {
               PopularComponent(),
               SeeMoreWidget(
                 title: "Top Rated",
-                page: PopularMovieSeeMore(),
+                page: TopRatedMovieSeeMore(),
               ),
               TopRatedComponent(),
               SizedBox(
