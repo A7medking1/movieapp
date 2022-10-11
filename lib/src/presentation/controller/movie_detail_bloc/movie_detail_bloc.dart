@@ -5,14 +5,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movieapp/src/core/utils/enums.dart';
 import 'package:movieapp/src/domain/entity/movie_detail.dart';
 import 'package:movieapp/src/domain/entity/recommendations.dart';
-import 'package:movieapp/src/domain/usecases/credits_movie.dart';
 import 'package:movieapp/src/domain/usecases/get_credits.dart';
 import 'package:movieapp/src/domain/usecases/get_movie_detail.dart';
 import 'package:movieapp/src/domain/usecases/get_movie_recommendations.dart';
 import 'package:movieapp/src/domain/usecases/get_videos.dart';
 
 import '../../../domain/entity/credits.dart';
-import '../../../domain/entity/movie.dart';
 import '../../../domain/entity/videos.dart';
 
 part 'movie_detail_event.dart';
@@ -25,20 +23,17 @@ class MovieDetailBloc extends Bloc<MovieDetailEvent, MovieDetailState> {
     this.getMovieRecommendationsUseCase,
     this.getCreditsUseCase,
     this.getVideosUseCase,
-      this.getCreditsMovieUseCase,
   ) : super(const MovieDetailState()) {
     on<GetMovieDetailEvent>(_getMovieDetailEvent);
     on<GetMovieRecommendationEvent>(_getRecommendation);
     on<GetCreditsEvent>(_getCredits);
     on<GetVideoEvent>(_getVideo);
-    on<GetCreditMovies>(_getCreditMovies);
   }
 
   final GetMovieDetailUseCase getMovieDetailUseCase;
   final GetMovieRecommendationsUseCase getMovieRecommendationsUseCase;
   final GetCreditsUseCase getCreditsUseCase;
   final GetVideosUseCase getVideosUseCase;
-  final GetCreditsMovieUseCase getCreditsMovieUseCase;
 
   FutureOr<void> _getMovieDetailEvent(
       GetMovieDetailEvent event, Emitter<MovieDetailState> emit) async {
@@ -121,27 +116,4 @@ class MovieDetailBloc extends Bloc<MovieDetailEvent, MovieDetailState> {
     );
   }
 
-  FutureOr<void> _getCreditMovies(GetCreditMovies event, Emitter<MovieDetailState> emit)async {
-
-    final result = await getCreditsMovieUseCase(CreditsMovieParameters(event.id));
-
-    result.fold(
-          (l) => emit(
-        state.copWith(
-          creditMoviesState: RequestState.error,
-          creditMoviesMessage: l.message,
-        ),
-      ),
-          (r) => emit(
-        state.copWith(
-          creditMoviesState: RequestState.loaded,
-          creditMovies: r,
-        ),
-      ),
-    );
-
-
-
-
-  }
 }

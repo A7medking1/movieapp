@@ -17,9 +17,6 @@ class MovieDetailState extends Equatable {
   final RequestState videoState;
   final String videoMessage;
 
-  final List<Movie> creditMovies;
-  final RequestState creditMoviesState;
-  final String creditMoviesMessage;
 
   const MovieDetailState({
     this.movieDetail,
@@ -34,9 +31,6 @@ class MovieDetailState extends Equatable {
     this.videos = const [],
     this.videoState = RequestState.loading,
     this.videoMessage = "",
-    this.creditMovies = const[],
-    this.creditMoviesState = RequestState.loading,
-    this.creditMoviesMessage = '',
   });
 
   MovieDetailState copWith({
@@ -53,9 +47,7 @@ class MovieDetailState extends Equatable {
     RequestState? videoState,
     String? videoMessage,
 
-    List<Movie>? creditMovies,
-    RequestState? creditMoviesState,
-    String? creditMoviesMessage,
+
   }) {
     return MovieDetailState(
       movieDetail: movieDetail ?? this.movieDetail,
@@ -74,9 +66,7 @@ class MovieDetailState extends Equatable {
       videoState: videoState ?? this.videoState,
       videoMessage: videoMessage ?? this.videoMessage,
 
-      creditMovies: creditMovies ?? this.creditMovies,
-      creditMoviesState: creditMoviesState ?? this.creditMoviesState,
-      creditMoviesMessage: creditMoviesMessage ?? this.creditMoviesMessage,
+
 
     );
   }
@@ -96,8 +86,5 @@ class MovieDetailState extends Equatable {
         videos,
         videoState,
         videoMessage,
-        creditMovies,
-        creditMoviesState,
-        creditMoviesMessage,
       ];
 }

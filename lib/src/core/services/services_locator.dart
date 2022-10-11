@@ -18,6 +18,7 @@ import 'package:movieapp/src/presentation/controller/movie_by_genrec_bloc/movies
 
 import '../../domain/usecases/get_credits.dart';
 import '../../domain/usecases/get_videos.dart';
+import '../../presentation/controller/credit_movies_bloc/credits_movies_bloc.dart';
 import '../../presentation/controller/movie_detail_bloc/movie_detail_bloc.dart';
 
 final sl = GetIt.instance;
@@ -30,10 +31,11 @@ class ServicesLocator {
 
     /// Bloc
     sl.registerFactory(() => MoviesBloc(sl(),sl(),sl()));
-    sl.registerFactory(() => MovieDetailBloc(sl() , sl() , sl() , sl() , sl()));
+    sl.registerFactory(() => MovieDetailBloc(sl() , sl() , sl() , sl() ,));
     sl.registerFactory(() => MovieCubit(sl() , sl()));
     sl.registerFactory(() => GenresBloc(sl()));
     sl.registerFactory(() => MoviesByGenresBloc(sl()));
+    sl.registerFactory(() => CreditsMoviesBloc(sl()));
 
     /// Use Cases
     sl.registerLazySingleton(() => GetNowPlayingMoviesUseCase(sl()));
