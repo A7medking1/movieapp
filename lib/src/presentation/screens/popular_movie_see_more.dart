@@ -1,101 +1,99 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movieapp/src/core/functions/navigator.dart';
-import 'package:movieapp/src/presentation/widget/custom_text.dart';
+import 'package:movieapp/src/presentation/controller/popular_pagination_bloc/popular_pagination_bloc.dart';
+import 'package:movieapp/src/presentation/screens/movie_detail_screen/movie_detail_screen.dart';
+import 'package:movieapp/src/presentation/widget/movie_data_card.dart';
 
-import '../../domain/entity/movie.dart';
-import '../controller/cubit/movie_pagination_cubit.dart';
+import '../../core/services/services_locator.dart';
 import '../widget/loading_spankit.dart';
-import '../widget/movie_data_card.dart';
-import 'movie_detail_screen/movie_detail_screen.dart';
 
-class PopularMovieSeeMore extends StatefulWidget {
-  const PopularMovieSeeMore({super.key});
+
+class PopularMoviesPaginationScreen extends StatelessWidget {
+  const PopularMoviesPaginationScreen({Key? key}) : super(key: key);
 
   @override
-  State<PopularMovieSeeMore> createState() => _PopularMovieSeeMoreState();
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => sl<PopularPaginationBloc>()..add(GetPopularPaginationMoviesEvent()),
+      child: Scaffold(
+      backgroundColor: Colors.grey.shade900,
+      appBar: AppBar(
+        backgroundColor: Colors.grey.shade900,
+      ),
+      body: const PopularMoviesPagination(),
+    ),
+);
+  }
 }
 
-class _PopularMovieSeeMoreState extends State<PopularMovieSeeMore> {
-  final scrollController = ScrollController();
-  List<Movie> movie = [];
-  bool isLoading = false;
 
-  void setupScrollController(context) {
-    scrollController.addListener(() {
-      if (scrollController.position.atEdge) {
-        if (scrollController.position.pixels != 0) {
-          BlocProvider.of<MovieCubit>(context).loadPopularMovies();
-        }
-      }
-    });
-  }
+
+class PopularMoviesPagination extends StatefulWidget {
+  const PopularMoviesPagination({Key? key}) : super(key: key);
 
   @override
-  void dispose() {
-    context.read<MovieCubit>().popularPage = 1;
-    super.dispose();
-    scrollController.dispose();
-  }
+  State<PopularMoviesPagination> createState() =>
+      _PopularMoviesPagination();
+}
+
+class _PopularMoviesPagination
+    extends State<PopularMoviesPagination> {
+  ScrollController scrollController = ScrollController();
 
   @override
   void initState() {
-    setupScrollController(context);
-    print(BlocProvider.of<MovieCubit>(context).popularPage);
-    BlocProvider.of<MovieCubit>(context).loadPopularMovies();
+    scrollController.addListener(_onScroll);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    print("build");
-    return Scaffold(
-      backgroundColor: Colors.grey.shade900,
-      appBar: AppBar(
-        title: const CustomText(text: "Movie"),
-        backgroundColor: Colors.grey.shade900,
-      ),
-      body: BlocBuilder<MovieCubit, MovieState>(builder: (context, state) {
-        if (state is PopularMovieLoading && state.isFirstFetch) {
-          return customLoading;
-        }
-        if (state is PopularMovieLoading) {
-          movie = state.oldMovie;
-          isLoading = true;
-        } else if (state is PopularMovieLoaded) {
-          movie = state.movie;
-        }
+    return BlocBuilder<PopularPaginationBloc, PopularPaginationState>(
+      builder: (context, state) {
+        print(context.read<PopularPaginationBloc>().page);
         return ListView.separated(
           controller: scrollController,
           itemBuilder: (context, index) {
-            if (index < movie.length) {
-              return InkWell(
-                onTap: () => navigateTo(
-                    context: context,
-                    page: MovieDetailScreen(id: movie[index].id)),
-                child:  MovieDataCard(movie: movie[index]),
-              );
-            } else {
-              Timer(const Duration(milliseconds: 30), () {
-                scrollController
-                    .jumpTo(scrollController.position.maxScrollExtent);
-              });
-              return customLoading;
-            }
+            if (index >= state.movie.length) return  customLoading;
+            return InkWell(
+              onTap: () => navigateTo(
+                context: context,
+                page: MovieDetailScreen(id: state.movie[index].id),
+              ),
+              child: MovieDataCard(
+                movie: state.movie[index],
+              ),
+            );
           },
           separatorBuilder: (context, index) {
             return Divider(
               color: Colors.grey.shade900,
             );
           },
-          itemCount: movie.length + (isLoading ? 1 : 0),
+          itemCount: state.movie.length + 1,
         );
-      }),
+      },
     );
   }
 
+  @override
+  void dispose() {
+    scrollController.dispose();
+    super.dispose();
+  }
 
+  void _onScroll() {
+    double maxScroll = scrollController.position.maxScrollExtent;
+    double currentScroll = scrollController.position.pixels;
+
+    if (maxScroll == currentScroll) {
+      context.read<PopularPaginationBloc>().isLoading = true;
+      context.read<PopularPaginationBloc>().page++;
+      context
+          .read<PopularPaginationBloc>()
+          .add(GetPopularPaginationMoviesEvent());
+    }
+  }
 }
 

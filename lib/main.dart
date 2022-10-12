@@ -7,6 +7,7 @@ import 'package:movieapp/src/data/repository/movie_repository.dart';
 import 'package:movieapp/src/domain/repository/base_movie_repository.dart';
 import 'package:movieapp/src/domain/usecases/get_genres.dart';
 import 'package:movieapp/src/presentation/controller/cubit/movie_pagination_cubit.dart';
+import 'package:movieapp/src/presentation/controller/popular_pagination_bloc/popular_pagination_bloc.dart';
 import 'package:movieapp/src/presentation/screens/app_layout_screen.dart';
 
 
@@ -22,18 +23,6 @@ void main() async
 
 class MyApp extends StatelessWidget
 {
-
-  void init()async{
-
-    BaseRemoteMovieDataSource movieRemoteDataSource = MovieRemoteDataSource();
-    BaseMovieRepository baseMovieRepository = MovieRepository(movieRemoteDataSource);
-    final  genresUseCase =  GetGenresUseCase(baseMovieRepository);
-
-    final res = await genresUseCase(const NoParameters());
-
-    print(res);
-  }
-
   const MyApp({super.key});
 
   @override
@@ -42,6 +31,7 @@ class MyApp extends StatelessWidget
     return  MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => sl<MovieCubit>()),
+        //BlocProvider(create: (context) => sl<PopularPaginationBloc>()..add(GetPopularPaginationMoviesEvent()))
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

@@ -31,12 +31,12 @@ class MainMoviesScreen extends StatelessWidget {
               NowPlayingComponent(),
               SeeMoreWidget(
                 title: "Popular",
-                page: PopularMovieSeeMore(),
+                page: PopularMoviesPaginationScreen(),
               ),
               PopularComponent(),
               SeeMoreWidget(
                 title: "Top Rated",
-                page: TopRatedMovieSeeMore(),
+                page: TopRatedPaginationScreen(),
               ),
               TopRatedComponent(),
               SizedBox(

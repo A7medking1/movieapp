@@ -3,34 +3,79 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movieapp/src/core/functions/navigator.dart';
+import 'package:movieapp/src/presentation/controller/top_rated_pagination_bloc/top_rated_pagination_bloc.dart';
 import 'package:movieapp/src/presentation/widget/custom_text.dart';
 
+import '../../core/services/services_locator.dart';
 import '../../domain/entity/movie.dart';
 import '../controller/cubit/movie_pagination_cubit.dart';
 import '../widget/loading_spankit.dart';
 import '../widget/movie_data_card.dart';
 import 'movie_detail_screen/movie_detail_screen.dart';
 
-class TopRatedMovieSeeMore extends StatefulWidget {
-  const TopRatedMovieSeeMore({super.key});
+class TopRatedPaginationScreen extends StatelessWidget {
+  const TopRatedPaginationScreen({Key? key}) : super(key: key);
 
   @override
-  State<TopRatedMovieSeeMore> createState() => _TopRatedMovieSeeMore();
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => sl<TopRatedPaginationBloc>()..add(GetTopRatedPaginationMoviesEvent()),
+      child: Scaffold(
+        backgroundColor: Colors.grey.shade900,
+        appBar: AppBar(
+          backgroundColor: Colors.grey.shade900,
+        ),
+        body: const TopRatedMoviesPagination(),
+      ),
+    );
+  }
+}
+class TopRatedMoviesPagination extends StatefulWidget {
+  const TopRatedMoviesPagination({Key? key}) : super(key: key);
+
+  @override
+  State<TopRatedMoviesPagination> createState() =>
+      _TopRatedMoviesPagination();
 }
 
-class _TopRatedMovieSeeMore extends State<TopRatedMovieSeeMore> {
-  final scrollController = ScrollController();
-  List<Movie> movie = [];
-  bool isLoading = false;
+class _TopRatedMoviesPagination
+    extends State<TopRatedMoviesPagination> {
+  ScrollController scrollController = ScrollController();
 
-  void setupScrollController(context) {
-    scrollController.addListener(() {
-      if (scrollController.position.atEdge) {
-        if (scrollController.position.pixels != 0) {
-          BlocProvider.of<MovieCubit>(context).loadTopRatedMovies();
-        }
-      }
-    });
+  @override
+  void initState() {
+    scrollController.addListener(_onScroll);
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<TopRatedPaginationBloc, TopRatedPaginationState>(
+      builder: (context, state) {
+        print(context.read<TopRatedPaginationBloc>().page);
+        return ListView.separated(
+          controller: scrollController,
+          itemBuilder: (context, index) {
+            if (index >= state.movie.length) return  customLoading;
+            return InkWell(
+              onTap: () => navigateTo(
+                context: context,
+                page: MovieDetailScreen(id: state.movie[index].id),
+              ),
+              child: MovieDataCard(
+                movie: state.movie[index],
+              ),
+            );
+          },
+          separatorBuilder: (context, index) {
+            return Divider(
+              color: Colors.grey.shade900,
+            );
+          },
+          itemCount: state.movie.length + 1,
+        );
+      },
+    );
   }
 
   @override
@@ -39,60 +84,19 @@ class _TopRatedMovieSeeMore extends State<TopRatedMovieSeeMore> {
     super.dispose();
   }
 
-  @override
-  void initState() {
-    setupScrollController(context);
-    BlocProvider.of<MovieCubit>(context).loadTopRatedMovies();
-    super.initState();
+  void _onScroll() {
+    double maxScroll = scrollController.position.maxScrollExtent;
+    double currentScroll = scrollController.position.pixels;
+
+    if (maxScroll == currentScroll) {
+      context.read<TopRatedPaginationBloc>().isLoading = true;
+      context.read<TopRatedPaginationBloc>().page++;
+      context
+          .read<TopRatedPaginationBloc>()
+          .add(GetTopRatedPaginationMoviesEvent());
+    }
   }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.grey.shade900,
-      appBar: AppBar(
-        title: const CustomText(text: "Movie"),
-        backgroundColor: Colors.grey.shade900,
-      ),
-      body: BlocBuilder<MovieCubit, MovieState>(builder: (context, state) {
-        if (state is TopRatedMovieLoading && state.isFirstFetch) {
-          return customLoading;
-        }
-        if (state is TopRatedMovieLoading) {
-          movie = state.oldMovie;
-          isLoading = true;
-        } else if (state is TopRatedMovieLoaded) {
-          movie = state.movie;
-        }
-        return ListView.separated(
-          controller: scrollController,
-          itemBuilder: (context, index) {
-            if (index < movie.length) {
-              return InkWell(
-                onTap: () => navigateTo(
-                    context: context,
-                    page: MovieDetailScreen(id: movie[index].id)),
-                child:  MovieDataCard(movie: movie[index]),
-              );
-            } else {
-              Timer(const Duration(milliseconds: 30), () {
-                scrollController
-                    .jumpTo(scrollController.position.maxScrollExtent);
-              });
-              return customLoading;
-            }
-          },
-          separatorBuilder: (context, index) {
-            return Divider(
-              color: Colors.grey.shade900,
-            );
-          },
-          itemCount: movie.length + (isLoading ? 1 : 0),
-        );
-      }),
-    );
-  }
-
-
 }
+
+
 

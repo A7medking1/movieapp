@@ -25,7 +25,7 @@ class ApiConstance {
 
   static const String genresPath = "$baseUrl/genre/movie/list?api_key=$apiKey";
 
-  static String movieByGenres( int genresId) =>
+  static String movieByGenres(int genresId) =>
       "$baseUrl/discover/movie?api_key=$apiKey&with_genres=$genresId";
 
   static String videoPath(int id) =>
