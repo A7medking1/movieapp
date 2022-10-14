@@ -12,6 +12,9 @@ part 'movies_by_genres_state.dart';
 
 class MoviesByGenresBloc
     extends Bloc<MoviesByGenresEvent, MoviesByGenresState> {
+  int page = 1;
+  bool isLoading = false;
+
   MoviesByGenresBloc(this.genresUseCase) : super(const MoviesByGenresState()) {
     on<GetMoviesByGenresEvent>(_getMoviesByGenres);
   }
@@ -20,21 +23,23 @@ class MoviesByGenresBloc
 
   FutureOr<void> _getMoviesByGenres(
       GetMoviesByGenresEvent event, Emitter<MoviesByGenresState> emit) async {
-    final result = await genresUseCase(MovieByGenresParameters(event.genresId));
+    List<Movie> movie = [];
+
+    final result = await genresUseCase(
+        MovieByGenresParameters(genresId: event.genresId, page: page));
 
     result.fold(
-      (l) => emit(
-        state.copyWith(
-          message: l.message,
-          requestState: RequestState.error,
-        ),
-      ),
-      (r) => emit(
-        state.copyWith(
-          movie: r,
-          requestState: RequestState.loaded,
-        ),
-      ),
-    );
+        (l) => emit(
+              state.copyWith(
+                message: l.message,
+                requestState: RequestState.error,
+              ),
+            ), (r) {
+      movie = r;
+    });
+
+    emit(state.copyWith(movie: state.movie + movie));
+    isLoading = false;
+
   }
 }

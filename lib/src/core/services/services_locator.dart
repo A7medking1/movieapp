@@ -11,7 +11,6 @@ import 'package:movieapp/src/domain/usecases/get_movie_recommendations.dart';
 import 'package:movieapp/src/domain/usecases/get_now_playing_movies.dart';
 import 'package:movieapp/src/domain/usecases/get_popular_movies.dart';
 import 'package:movieapp/src/domain/usecases/get_top_rated_movies.dart';
-import 'package:movieapp/src/presentation/controller/cubit/movie_pagination_cubit.dart';
 import 'package:movieapp/src/presentation/controller/genres_bloc/genres_bloc.dart';
 import 'package:movieapp/src/presentation/controller/movie_bloc/movies_bloc.dart';
 import 'package:movieapp/src/presentation/controller/movie_by_genrec_bloc/movies_by_genres_bloc.dart';
@@ -34,7 +33,6 @@ class ServicesLocator {
     /// Bloc
     sl.registerFactory(() => MoviesBloc(sl(),sl(),sl()));
     sl.registerFactory(() => MovieDetailBloc(sl() , sl() , sl() , sl() ,));
-    sl.registerFactory(() => MovieCubit(sl() , sl()));
     sl.registerFactory(() => GenresBloc(sl()));
     sl.registerFactory(() => MoviesByGenresBloc(sl()));
     sl.registerFactory(() => CreditsMoviesBloc(sl()));

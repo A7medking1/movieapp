@@ -182,7 +182,7 @@ class MovieRemoteDataSource extends BaseRemoteMovieDataSource {
 
   @override
   Future<List<MovieModel>> getMoviesByGenres(MovieByGenresParameters parameter) async{
-    final response = await sl<Dio>().get(ApiConstance.movieByGenres(parameter.genresId));
+    final response = await sl<Dio>().get(ApiConstance.movieByGenres(parameter.genresId , parameter.page));
 
     if (response.statusCode == 200) {
       return List<MovieModel>.from((response.data["results"] as List).map(

@@ -15,7 +15,9 @@ class CategoriesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => sl<GenresBloc>()..add(GetGenresEvent()),
+      create: (context) =>
+      sl<GenresBloc>()
+        ..add(GetGenresEvent()),
       child: BlocBuilder<GenresBloc, GenresState>(
         builder: (context, state) {
           switch (state.requestState) {
@@ -42,7 +44,8 @@ class CategoriesScreen extends StatelessWidget {
                       onTap: () {
                         navigateTo(
                             context: context,
-                            page: MovieByGenresScreen(genresId: genres.id,genresName: genres.name,));
+                            page: MovieByGenresScreen(
+                              genresId: genres.id, genresName: genres.name,));
                       },
                       child: Card(
                         child: Center(

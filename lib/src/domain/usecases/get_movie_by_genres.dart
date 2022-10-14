@@ -22,9 +22,10 @@ class GetMoviesByGenresUseCase
 
 class MovieByGenresParameters extends Equatable {
   final int genresId;
+  final int page;
 
-  const MovieByGenresParameters(this.genresId);
+  const MovieByGenresParameters({required this.genresId,required this.page});
 
   @override
-  List<Object> get props => [genresId];
+  List<Object> get props => [genresId ,page];
 }

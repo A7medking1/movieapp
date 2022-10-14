@@ -1,14 +1,10 @@
-import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movieapp/src/core/functions/navigator.dart';
 import 'package:movieapp/src/presentation/controller/top_rated_pagination_bloc/top_rated_pagination_bloc.dart';
-import 'package:movieapp/src/presentation/widget/custom_text.dart';
 
 import '../../core/services/services_locator.dart';
-import '../../domain/entity/movie.dart';
-import '../controller/cubit/movie_pagination_cubit.dart';
 import '../widget/loading_spankit.dart';
 import '../widget/movie_data_card.dart';
 import 'movie_detail_screen/movie_detail_screen.dart';
