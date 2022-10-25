@@ -8,6 +8,7 @@ import 'package:movieapp/src/domain/entity/videos.dart';
 import 'package:movieapp/src/domain/usecases/credits_movie.dart';
 import 'package:movieapp/src/domain/usecases/get_movie_detail.dart';
 import 'package:movieapp/src/domain/usecases/get_movie_recommendations.dart';
+import 'package:movieapp/src/domain/usecases/search_movies.dart';
 
 import '../../core/error/failure.dart';
 import '../entity/movie.dart';
@@ -37,6 +38,8 @@ abstract class BaseMovieRepository {
   Future<Either<Failure , List<Genres>>> getGenres();
 
   Future<Either<Failure,List<Movie>>> getMoviesByGenres(MovieByGenresParameters parameters);
+
+  Future<Either<Failure,List<Movie>>> searchMovies(SearchMoviesParameters parameters);
 
 
 }

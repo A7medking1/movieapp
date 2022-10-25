@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movieapp/src/core/functions/navigator.dart';
 import 'package:movieapp/src/presentation/controller/movie_bloc/movies_bloc.dart';
+import 'package:movieapp/src/presentation/screens/search_screen/search_screen.dart';
 import 'package:movieapp/src/presentation/screens/top_rated_movie_see_more.dart';
 import 'package:movieapp/src/presentation/widget/see_more_widget.dart';
 
@@ -23,6 +25,21 @@ class MainMoviesScreen extends StatelessWidget {
         ..add(GetPopularMoviesEvent())
         ..add(GetTopRatedMoviesEvent()),
       child: Scaffold(
+        appBar: AppBar(
+         actions: [
+           Padding(
+             padding: const EdgeInsets.all(8.0),
+             child: IconButton(
+               onPressed: () {
+                navigateTo(context: context, page: const SearchScreen());
+               },
+               icon: const Icon(
+                 Icons.search,
+               ),
+             ),
+           ),
+         ],
+        ),
         body: SingleChildScrollView(
           key: const Key('movieScrollView'),
           child: Column(

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:movieapp/src/presentation/screens/categories_screen/categories_screen.dart';
+import 'package:movieapp/src/presentation/screens/favorite_screen/search_screen.dart';
 import 'package:movieapp/src/presentation/screens/main_home_screen/movies_screen.dart';
 import 'package:movieapp/src/presentation/screens/profile_screen/profile_screen.dart';
-import 'package:movieapp/src/presentation/screens/search_screen/search_screen.dart';
 
 class AppLayOutScreen extends StatefulWidget {
   const AppLayOutScreen({Key? key}) : super(key: key);
@@ -17,7 +17,7 @@ class _AppLayOutScreenState extends State<AppLayOutScreen> {
   final List<Widget> screens = [
     const MainMoviesScreen(),
     const CategoriesScreen(),
-    const SearchScreen(),
+    const FavoriteScreen(),
     const ProfileScreen(),
   ];
 
@@ -88,7 +88,7 @@ class _AppLayOutScreenState extends State<AppLayOutScreen> {
           activeIcon: const Padding(
             padding: EdgeInsets.only(top: 18.0),
             child: Text(
-              "Search",
+              "Favorite",
               style: TextStyle(color: Colors.white),
             ),
           ),
@@ -96,7 +96,7 @@ class _AppLayOutScreenState extends State<AppLayOutScreen> {
           icon: Padding(
             padding: const EdgeInsets.only(top: 20),
             child: SvgPicture.asset(
-              'assets/icons/search.svg',
+              'assets/icons/favorite.svg',
               fit: BoxFit.contain,
               color: Colors.white,
               width: 20,

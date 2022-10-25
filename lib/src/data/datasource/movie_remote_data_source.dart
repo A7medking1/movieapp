@@ -13,6 +13,7 @@ import 'package:movieapp/src/domain/usecases/get_movie_by_genres.dart';
 import 'package:movieapp/src/domain/usecases/get_movie_detail.dart';
 import 'package:movieapp/src/domain/usecases/get_movie_recommendations.dart';
 import 'package:movieapp/src/domain/usecases/get_videos.dart';
+import 'package:movieapp/src/domain/usecases/search_movies.dart';
 
 import '../../core/error/exception.dart';
 import '../../core/network/error_message_model.dart';
@@ -42,6 +43,8 @@ abstract class BaseRemoteMovieDataSource
   Future<List<GenresModel>> getGenres();
 
   Future<List<MovieModel>> getMoviesByGenres(MovieByGenresParameters parameter);
+
+  Future<List<MovieModel>> searchMovies(SearchMoviesParameters parameters);
 
 
 }
@@ -183,7 +186,20 @@ class MovieRemoteDataSource extends BaseRemoteMovieDataSource {
   @override
   Future<List<MovieModel>> getMoviesByGenres(MovieByGenresParameters parameter) async{
     final response = await sl<Dio>().get(ApiConstance.movieByGenres(parameter.genresId , parameter.page));
+    if (response.statusCode == 200) {
+      return List<MovieModel>.from((response.data["results"] as List).map(
+            (e) => MovieModel.fromJson(e),
+      ));
+    } else {
+      throw ServerException(
+        errorMessageModel: ErrorMessageModel.fromJson(response.data),
+      );
+    }
+  }
 
+  @override
+  Future<List<MovieModel>> searchMovies(SearchMoviesParameters parameters) async{
+    final response = await sl<Dio>().get(ApiConstance.searchMoviesPath(parameters.query));
     if (response.statusCode == 200) {
       return List<MovieModel>.from((response.data["results"] as List).map(
             (e) => MovieModel.fromJson(e),

@@ -37,8 +37,7 @@ class MoviesByGenresBloc
             ), (r) {
       movie = r;
     });
-
-    emit(state.copyWith(movie: state.movie + movie));
+    emit(state.copyWith(movie: state.movie + movie,requestState: RequestState.loaded));
     isLoading = false;
 
   }

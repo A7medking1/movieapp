@@ -11,10 +11,12 @@ import 'package:movieapp/src/domain/usecases/get_movie_recommendations.dart';
 import 'package:movieapp/src/domain/usecases/get_now_playing_movies.dart';
 import 'package:movieapp/src/domain/usecases/get_popular_movies.dart';
 import 'package:movieapp/src/domain/usecases/get_top_rated_movies.dart';
+import 'package:movieapp/src/domain/usecases/search_movies.dart';
 import 'package:movieapp/src/presentation/controller/genres_bloc/genres_bloc.dart';
 import 'package:movieapp/src/presentation/controller/movie_bloc/movies_bloc.dart';
 import 'package:movieapp/src/presentation/controller/movie_by_genrec_bloc/movies_by_genres_bloc.dart';
 import 'package:movieapp/src/presentation/controller/popular_pagination_bloc/popular_pagination_bloc.dart';
+import 'package:movieapp/src/presentation/controller/search_bloc/search_bloc.dart';
 import 'package:movieapp/src/presentation/controller/top_rated_pagination_bloc/top_rated_pagination_bloc.dart';
 
 import '../../domain/usecases/get_credits.dart';
@@ -38,6 +40,7 @@ class ServicesLocator {
     sl.registerFactory(() => CreditsMoviesBloc(sl()));
     sl.registerFactory(() => PopularPaginationBloc(sl()));
     sl.registerFactory(() => TopRatedPaginationBloc(sl()));
+    sl.registerFactory(() => SearchBloc(sl()));
 
     /// Use Cases
     sl.registerLazySingleton(() => GetNowPlayingMoviesUseCase(sl()));
@@ -50,6 +53,7 @@ class ServicesLocator {
     sl.registerLazySingleton(() => GetCreditsMovieUseCase(sl()));
     sl.registerLazySingleton(() => GetGenresUseCase(sl()));
     sl.registerLazySingleton(() => GetMoviesByGenresUseCase(sl()));
+    sl.registerLazySingleton(() => SearchMoviesUseCase(sl()));
 
     /// Repository
     sl.registerLazySingleton<BaseMovieRepository>(() => MovieRepository(sl()));

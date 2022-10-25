@@ -69,7 +69,6 @@ class _MovieByGenresState extends State<MovieByGenres> {
         return ListView.separated(
           controller: scrollController,
           itemBuilder: (context, index) {
-            print("index => $index");
             if (index >= state.movie.length) return customLoading;
             final movie = state.movie[index];
             return InkWell(

@@ -14,6 +14,7 @@ import 'package:movieapp/src/domain/usecases/get_credits.dart';
 import 'package:movieapp/src/domain/usecases/get_movie_by_genres.dart';
 import 'package:movieapp/src/domain/usecases/get_movie_detail.dart';
 import 'package:movieapp/src/domain/usecases/get_movie_recommendations.dart';
+import 'package:movieapp/src/domain/usecases/search_movies.dart';
 
 import '../../domain/usecases/get_popular_movies.dart';
 import '../../domain/usecases/get_top_rated_movies.dart';
@@ -131,6 +132,17 @@ class MovieRepository extends BaseMovieRepository {
   @override
   Future<Either<Failure, List<Movie>>> getMoviesByGenres(MovieByGenresParameters parameters) async{
     final result = await movieRemoteDataSource.getMoviesByGenres(parameters);
+
+    try {
+      return Right(result);
+    } on ServerException catch (failure) {
+      return Left(ServerFailure(failure.errorMessageModel.statusMessage));
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<Movie>>> searchMovies(SearchMoviesParameters parameters)async {
+    final result = await movieRemoteDataSource.searchMovies(parameters);
 
     try {
       return Right(result);
