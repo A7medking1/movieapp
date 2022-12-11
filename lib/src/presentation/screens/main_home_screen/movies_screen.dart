@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:movieapp/src/core/functions/navigator.dart';
 import 'package:movieapp/src/presentation/controller/movie_bloc/movies_bloc.dart';
 import 'package:movieapp/src/presentation/screens/search_screen/search_screen.dart';
@@ -15,7 +16,6 @@ import 'component/top_rated_component.dart';
 
 class MainMoviesScreen extends StatelessWidget {
   const MainMoviesScreen({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     print("xxxxxx");
@@ -26,6 +26,9 @@ class MainMoviesScreen extends StatelessWidget {
         ..add(GetTopRatedMoviesEvent()),
       child: Scaffold(
         appBar: AppBar(
+          title: Text("Movie App",style: GoogleFonts.lobster(
+            fontSize: 25
+          )),
          actions: [
            Padding(
              padding: const EdgeInsets.all(8.0),

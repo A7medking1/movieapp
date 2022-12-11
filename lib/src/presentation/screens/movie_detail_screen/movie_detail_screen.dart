@@ -100,6 +100,7 @@ class MovieDetailContent extends StatelessWidget {
                           imageUrl: ApiConstance.imageUrl(
                               state.movieDetail!.posterPath),
                           fit: BoxFit.fill,
+                          width: double.infinity,
                         ),
                       ),
                     ),

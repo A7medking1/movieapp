@@ -98,10 +98,24 @@ class CreditMoviesScreen extends StatelessWidget {
                     child: FadeInUp(
                       from: 20,
                       duration: const Duration(milliseconds: 500),
-                      child: CustomText(
-                        text: 'credit Movies'.toUpperCase(),
-                        letterSpacing: 1.2,
-                        fontSize: 20,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children:
+                        [
+                          CustomText(
+                            text: 'credit Movies'.toUpperCase(),
+                            letterSpacing: 1.2,
+                            fontSize: 20,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(right: 15),
+                            child: CustomText(
+                              text: "${state.creditMovies.length} Movies".toUpperCase(),
+                              letterSpacing: 1.2,
+                              fontSize: 20,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ),

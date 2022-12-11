@@ -28,7 +28,7 @@ class CategoriesScreen extends StatelessWidget {
             case RequestState.loaded:
               return Scaffold(
                 appBar: AppBar(
-                  title: const Text("Categories Screen"),
+                  title: const Text("Categories"),
                 ),
                 body: GridView.builder(
                   itemCount: state.genres.length,

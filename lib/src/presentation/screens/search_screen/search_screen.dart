@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movieapp/src/core/functions/navigator.dart';
 import 'package:movieapp/src/presentation/controller/search_bloc/search_bloc.dart';
+import 'package:movieapp/src/presentation/screens/movie_detail_screen/movie_detail_screen.dart';
+import 'package:movieapp/src/presentation/widget/custom_icon.dart';
+import 'package:movieapp/src/presentation/widget/custom_text.dart';
 
 import '../../../core/services/services_locator.dart';
 import '../../widget/movie_data_card.dart';
@@ -47,8 +51,17 @@ class SearchWidget extends StatelessWidget {
                     ),
                     labelText: "Search",
                     labelStyle: const TextStyle(color: Colors.white),
-                    prefixIcon: const Icon(
-                      Icons.search,
+                    suffixIcon: IconButton(
+                      onPressed: () => textEditingController.text = "",
+                      icon: const Padding(
+                        padding: EdgeInsets.only(right: 15),
+                        child: CustomIcon(
+                          icon: Icons.delete,
+                        ),
+                      ),
+                    ),
+                    prefixIcon: const CustomIcon(
+                      icon: Icons.search,
                       color: Colors.white,
                     ),
                   ),
@@ -70,17 +83,36 @@ class SearchWidget extends StatelessWidget {
                   height: 20,
                 ),
                 if (state is SearchLoading) const LinearProgressIndicator(),
-                if(state is SearchLoaded)
-                  if(state.movie.isEmpty)
-                    const Center(child: Text("Empty",style: TextStyle(color: Colors.white,fontSize: 25),)),
+                if (state is SearchLoaded)
+                  if (state.movie.isEmpty)
+                    const Center(
+                        child: CustomText(
+                      text: "Empty",
+                      style: TextStyle(color: Colors.white, fontSize: 25),
+                    )),
                 if (state is SearchLoaded)
                   Expanded(
                     child: ListView.separated(
-                      itemBuilder: (context,index) => MovieDataCard(movie: state.movie[index]),
-                      separatorBuilder: (context,index) => const SizedBox(height: 10,),
+                      itemBuilder: (context, index) => InkWell(
+                        onTap: () => navigateTo(
+                            context: context,
+                            page: MovieDetailScreen(id: state.movie[index].id)),
+                        child: MovieDataCard(
+                          movie: state.movie[index],
+                        ),
+                      ),
+                      separatorBuilder: (context, index) => const SizedBox(
+                        height: 10,
+                      ),
                       itemCount: state.movie.length,
                     ),
                   ),
+                if (state is SearchError)
+                  Center(
+                      child: CustomText(
+                    text: state.message.toString(),
+                    style: const TextStyle(color: Colors.white, fontSize: 25),
+                  )),
               ],
             ),
           ),
@@ -89,4 +121,3 @@ class SearchWidget extends StatelessWidget {
     );
   }
 }
-

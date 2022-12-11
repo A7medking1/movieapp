@@ -6,11 +6,9 @@ import 'cached_image_widget.dart';
 import 'custom_icon.dart';
 import 'custom_text.dart';
 
-class MovieDataCard extends StatelessWidget {
-
+class MovieDataCard extends StatelessWidget
+{
   final Movie movie;
-
-
   const MovieDataCard({
     Key? key,
     required this.movie,
@@ -24,7 +22,8 @@ class MovieDataCard extends StatelessWidget {
       color: Colors.grey.shade900,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+        children:
+        [
           SizedBox(
             height: 120,
             child: CachedImages(
@@ -44,7 +43,8 @@ class MovieDataCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
-                    children: [
+                    children:
+                    [
                       Expanded(
                         child: CustomText(
                           text: movie.title,
@@ -71,7 +71,7 @@ class MovieDataCard extends StatelessWidget {
                           borderRadius: BorderRadius.circular(4.0),
                         ),
                         child: CustomText(
-                          text: movie.releaseDate.split('-')[0],
+                          text: movie.releaseDate!.split('-')[0],
                           fontSize: 16.0,
                           fontWeight: FontWeight.w500,
                         ),
