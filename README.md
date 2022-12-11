@@ -19,7 +19,7 @@ samples, guidance on mobile development, and a full API reference.
 
 
 
-# Directory Structure for project
+## Directory Structure for project
 ```
 └───src
     ├───core
