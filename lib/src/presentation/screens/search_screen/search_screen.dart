@@ -65,13 +65,17 @@ class SearchWidget extends StatelessWidget {
                       color: Colors.white,
                     ),
                   ),
-                  onFieldSubmitted: (text) {
+                  onChanged: (text) {
+                    print(text);
+                    context.read<SearchBloc>().add(GetSearchMovieEvent(text));
+                  },
+                  /*onFieldSubmitted: (text) {
                     if (formKey.currentState!.validate()) {
                       context
                           .read<SearchBloc>()
                           .add(GetSearchMovieEvent(textEditingController.text));
                     }
-                  },
+                  },*/
                   validator: (value) {
                     if (value!.isEmpty) {
                       return 'Empty text';
