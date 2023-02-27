@@ -3,6 +3,8 @@ class ApiConstance {
 
   static const String apiKey = "8b62c46f238dec5717dbd4169229195f";
 
+  /// Movie Constant
+
   static const String nowPlayingMoviePath =
       "$baseUrl/movie/now_playing?api_key=$apiKey";
 
@@ -40,4 +42,34 @@ class ApiConstance {
   static const baseImageUrl = "https://image.tmdb.org/t/p/w500";
 
   static String imageUrl(String path) => "$baseImageUrl$path";
+
+  ///  Tv constant
+
+  static String popularTvPath(int page) =>
+      "$baseUrl/tv/popular?api_key=$apiKey&page=$page";
+
+  static String topRatedTvPath(int page) =>
+      "$baseUrl/tv/top_rated?api_key=$apiKey&page=$page";
+
+  static String latestTvPath(int page) =>
+      "$baseUrl/tv/latest?api_key=$apiKey&page=$page";
+
+  static String WarTvPath(int page) =>
+      "$baseUrl/discover/tv?api_key=$apiKey&page=$page&with_genres=10768";
+
+  static String animationTvPath(int page) =>
+      "$baseUrl/discover/tv?api_key=$apiKey&page=$page&with_genres=16";
+
+  static String trendingTvPath(int page) =>
+      "$baseUrl/trending/tv/week?api_key=$apiKey&page=$page";
+
+  static String tvDetailPath(int id) => "$baseUrl/tv/$id?api_key=$apiKey&append_to_response=videos,similar,credits";
+
+
+  static String tvSeasonDetailPath(int tvId , int seasonNumber) => "$baseUrl/tv/$tvId/season/$seasonNumber?api_key=$apiKey";
+
+
+
+
+
 }
