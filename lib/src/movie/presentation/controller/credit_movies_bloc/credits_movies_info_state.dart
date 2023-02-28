@@ -1,4 +1,4 @@
-part of 'credits_movies_bloc.dart';
+part of 'credits_movies_info_bloc.dart';
 
 class CreditsMoviesState extends Equatable {
   final List<Movie> creditMovies;

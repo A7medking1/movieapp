@@ -7,12 +7,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movieapp/src/core/functions/navigator.dart';
 import 'package:movieapp/src/core/utils/api_constance.dart';
 
-
 import '../../../../core/services/services_locator.dart';
 import '../../../../core/utils/app_constance.dart';
-
 import '../../../domain/entity/credits.dart';
-import '../../controller/credit_movies_bloc/credits_movies_bloc.dart';
+import '../../controller/credit_movies_bloc/credits_movies_info_bloc.dart';
 import '../../widget/cached_image_widget.dart';
 import '../../widget/custom_text.dart';
 import '../../widget/movie_data_card.dart';
@@ -102,8 +100,7 @@ class CreditInfoScreen extends StatelessWidget {
                       duration: const Duration(milliseconds: 500),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children:
-                        [
+                        children: [
                           CustomText(
                             text: 'credit Movies'.toUpperCase(),
                             letterSpacing: 1.2,
@@ -112,7 +109,8 @@ class CreditInfoScreen extends StatelessWidget {
                           Padding(
                             padding: const EdgeInsets.only(right: 15),
                             child: CustomText(
-                              text: "${state.creditMovies.length} Movies".toUpperCase(),
+                              text: "${state.creditMovies.length} Movies"
+                                  .toUpperCase(),
                               letterSpacing: 1.2,
                               fontSize: 20,
                             ),
@@ -132,7 +130,9 @@ class CreditInfoScreen extends StatelessWidget {
                             navigateTo(
                                 context: context,
                                 page: MovieDetailScreen(
-                                    id: state.creditMovies[index].id));
+                                  hero: UniqueKey(),
+                                  id: state.creditMovies[index].id,
+                                ));
                           },
                           child: MovieDataCard(
                             movie: state.creditMovies[index],

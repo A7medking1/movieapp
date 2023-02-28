@@ -59,6 +59,7 @@ class _NowPlayingComponentState extends State<NowPlayingComponent> {
                         context: context,
                         page: MovieDetailScreen(
                           id: item.id,
+                            hero: UniqueKey()
                         ),
                       );
                       },

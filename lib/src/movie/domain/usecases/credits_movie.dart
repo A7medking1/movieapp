@@ -16,7 +16,7 @@ class GetCreditsMovieUseCase
 
   @override
   Future<Either<Failure, List<Movie>>> call(CreditsMovieParameters parameters) async{
-   return await baseMovieRepository.getCreditsMovie(parameters);
+   return await baseMovieRepository.getCreditsMovieInfo(parameters);
   }
 
 

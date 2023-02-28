@@ -4,24 +4,26 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movieapp/src/core/functions/navigator.dart';
 import 'package:movieapp/src/core/utils/api_constance.dart';
 import 'package:movieapp/src/core/utils/enums.dart';
+import 'package:movieapp/src/movie/domain/entity/movie.dart';
+import 'package:movieapp/src/movie/presentation/screens/movie_detail_screen/movie_detail_screen.dart';
 import 'package:movieapp/src/movie/presentation/widget/cached_image_widget.dart';
 import 'package:movieapp/src/movie/presentation/widget/loading_spankit.dart';
-import 'package:movieapp/src/tv/domin/entitiy/tv.dart';
 import 'package:movieapp/src/tv/presentation/screens/tv_detail_screen/tv_detail_screen.dart';
 
 import '../../../core/services/services_locator.dart';
-import '../controller/pagination_bloc/pagination_bloc.dart';
+import '../../../tv/presentation/controller/pagination_bloc/pagination_bloc.dart';
 
-class TvShowsScreen extends StatelessWidget {
+class MovieShowsScreen extends StatelessWidget {
   final SeeMore seeMore;
 
-  const TvShowsScreen({Key? key, required this.seeMore}) : super(key: key);
+  const MovieShowsScreen({Key? key, required this.seeMore}) : super(key: key);
 
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => sl<PaginationBloc>()..add(GetTvPaginationEvent(seeMore)),
+      create: (context) =>
+          sl<PaginationBloc>()..add(GetMoviePaginationEvent(seeMore)),
       child: Scaffold(
-        body: TvsShowsContent(
+        body: MovieShowsContent(
           seeMore: seeMore,
         ),
       ),
@@ -29,16 +31,16 @@ class TvShowsScreen extends StatelessWidget {
   }
 }
 
-class TvsShowsContent extends StatefulWidget {
+class MovieShowsContent extends StatefulWidget {
   final SeeMore seeMore;
 
-  const TvsShowsContent({Key? key, required this.seeMore}) : super(key: key);
+  const MovieShowsContent({Key? key, required this.seeMore}) : super(key: key);
 
   @override
-  State<TvsShowsContent> createState() => _TvsShowsContentState();
+  State<MovieShowsContent> createState() => _MovieShowsContentState();
 }
 
-class _TvsShowsContentState extends State<TvsShowsContent> {
+class _MovieShowsContentState extends State<MovieShowsContent> {
   ScrollController controller = ScrollController();
 
   @override
@@ -59,16 +61,15 @@ class _TvsShowsContentState extends State<TvsShowsContent> {
         controller: controller,
         slivers: [
           SliverAppBar(
-            title: Text('${widget.seeMore.name} Tvs'),
+            title: Text('${widget.seeMore.name} movies'),
             floating: true,
             //snap: true,
             //  pinned: true,
           ),
           BlocBuilder<PaginationBloc, PaginationState>(
             builder: (context, state) {
-              //  print(sl<TvBloc>().page);
-              return TvSliverGridViewDataPagination(
-                list: state.tvPagination,
+              return MovieSliverGridViewDataPagination(
+                list: state.moviePagination,
               );
             },
           ),
@@ -83,15 +84,17 @@ class _TvsShowsContentState extends State<TvsShowsContent> {
 
     if (maxScroll == currentScroll) {
       context.read<PaginationBloc>().page++;
-      context.read<PaginationBloc>().add(GetTvPaginationEvent(widget.seeMore));
+      context
+          .read<PaginationBloc>()
+          .add(GetMoviePaginationEvent(widget.seeMore));
     }
   }
 }
 
-class TvSliverGridViewDataPagination extends StatelessWidget {
-  final List<Tv> list;
+class MovieSliverGridViewDataPagination extends StatelessWidget {
+  final List<Movie> list;
 
-  const TvSliverGridViewDataPagination({Key? key, required this.list})
+  const MovieSliverGridViewDataPagination({Key? key, required this.list})
       : super(key: key);
 
   @override
@@ -107,8 +110,8 @@ class TvSliverGridViewDataPagination extends StatelessWidget {
               onTap: () {
                 navigateTo(
                     context: context,
-                    page: DetailTvScreen(
-                      tvId: list[index].id,
+                    page: MovieDetailScreen(
+                      id: list[index].id,
                       hero: _key,
                     ));
               },
@@ -125,7 +128,7 @@ class TvSliverGridViewDataPagination extends StatelessWidget {
                             const BorderRadius.all(Radius.circular(10.0)),
                         child: CachedImages(
                           imageUrl: ApiConstance.imageUrl(
-                            list[index].poster_path!,
+                            list[index].backdropPath!,
                           ),
                           fit: BoxFit.contain,
                         ),

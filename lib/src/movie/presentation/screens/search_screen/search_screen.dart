@@ -124,7 +124,7 @@ class _SearchWidgetState extends State<SearchWidget> {
                       itemBuilder: (context, index) => InkWell(
                         onTap: () => navigateTo(
                             context: context,
-                            page: MovieDetailScreen(id: state.movie[index].id)),
+                            page: MovieDetailScreen(id: state.movie[index].id, hero: UniqueKey(),),),
                         child: MovieDataCard(
                           movie: state.movie[index],
                         ),

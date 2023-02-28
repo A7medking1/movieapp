@@ -14,15 +14,11 @@ class ApiConstance {
   static String topRatedPath(int page) =>
       "$baseUrl/movie/top_rated?api_key=$apiKey&page=$page";
 
-  static String movieDetailPath(int id) => "$baseUrl/movie/$id?api_key=$apiKey";
+  static String movieDetailPath(int id) =>
+      "$baseUrl/movie/$id?api_key=$apiKey&append_to_response=videos,similar,credits";
 
-  static String recommendationsPath(int id) =>
-      "$baseUrl/movie/$id/recommendations?api_key=$apiKey";
 
-  static String creditsPath(int id) =>
-      "$baseUrl/movie/$id/credits?api_key=$apiKey";
-
-  static String creditMoviesPath(int personId) =>
+  static String creditMoviesInfoPath(int personId) =>
       "$baseUrl/person/$personId/movie_credits?api_key=$apiKey";
 
   static const String genresPath = "$baseUrl/genre/movie/list?api_key=$apiKey";
@@ -32,9 +28,6 @@ class ApiConstance {
 
   static String searchMoviesPath(String query) =>
       "https://api.themoviedb.org/3/search/movie?api_key=8b62c46f238dec5717dbd4169229195f&query=$query";
-
-  static String videoPath(int id) =>
-      "$baseUrl//movie/$id/videos?api_key=$apiKey";
 
   static String youtubePath(String key) =>
       "https://www.youtube.com/watch?v=$key";
@@ -63,13 +56,9 @@ class ApiConstance {
   static String trendingTvPath(int page) =>
       "$baseUrl/trending/tv/week?api_key=$apiKey&page=$page";
 
-  static String tvDetailPath(int id) => "$baseUrl/tv/$id?api_key=$apiKey&append_to_response=videos,similar,credits";
+  static String tvDetailPath(int id) =>
+      "$baseUrl/tv/$id?api_key=$apiKey&append_to_response=videos,similar,credits";
 
-
-  static String tvSeasonDetailPath(int tvId , int seasonNumber) => "$baseUrl/tv/$tvId/season/$seasonNumber?api_key=$apiKey";
-
-
-
-
-
+  static String tvSeasonDetailPath(int tvId, int seasonNumber) =>
+      "$baseUrl/tv/$tvId/season/$seasonNumber?api_key=$apiKey";
 }

@@ -73,7 +73,7 @@ class _MovieByGenresState extends State<MovieByGenres> {
             final movie = state.movie[index];
             return InkWell(
               onTap: () => navigateTo(
-                  context: context, page: MovieDetailScreen(id: movie.id)),
+                  context: context, page: MovieDetailScreen(id: movie.id,hero: UniqueKey())),
               child: MovieDataCard(movie: movie),
             );
           },

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../core/services/services_locator.dart';
 import '../../../../core/utils/api_constance.dart';
@@ -16,31 +15,33 @@ import '../../widget/custom_icon.dart';
 import '../../widget/custom_text.dart';
 import '../../widget/loading_spankit.dart';
 import 'component/credits_component.dart';
-import 'component/recommendation_component.dart';
+import 'component/similar_movie_component.dart';
 
 class MovieDetailScreen extends StatelessWidget {
   final int id;
+  final UniqueKey hero ;
 
-  const MovieDetailScreen({Key? key, required this.id}) : super(key: key);
+  const MovieDetailScreen({Key? key, required this.id, required this.hero}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    print('id movie = $id');
     return BlocProvider(
       create: (context) => sl<MovieDetailBloc>()
-        ..add(GetMovieDetailEvent(id))
-        ..add(GetMovieRecommendationEvent(id))
-        ..add(GetCreditsEvent(id))
-        ..add(GetVideoEvent(id)),
-      child: const Scaffold(
-        body: MovieDetailContent(),
+        ..add(GetMovieDetailEvent(id)),
+      child:  Scaffold(
+        body: MovieDetailContent(hero: hero,),
       ),
     );
   }
 }
 
 class MovieDetailContent extends StatelessWidget {
+
+  final UniqueKey hero ;
   const MovieDetailContent({
     Key? key,
+    required this.hero,
   }) : super(key: key);
 
   @override
@@ -54,31 +55,11 @@ class MovieDetailContent extends StatelessWidget {
             );
           case RequestState.loaded:
             return CustomScrollView(
-              key: const Key("state.movieDetail!.title"),
               slivers: [
                 SliverAppBar(
                   pinned: true,
                   expandedHeight: 250.0,
                   stretch: true,
-                  actions: [
-                    Padding(
-                      padding: const EdgeInsets.only(right: 30),
-                      child: IconButton(
-                        icon: const Icon(
-                          Icons.play_circle_fill_rounded,
-                          size: 40,
-                        ),
-                        color: Colors.blue,
-                        onPressed: () async {
-                          final String test =
-                              ApiConstance.youtubePath(state.videos[0].key);
-                          if (await canLaunchUrl(Uri.parse(test))) {
-                            await launchUrl(Uri.parse(test));
-                          }
-                        },
-                      ),
-                    ),
-                  ],
                   flexibleSpace: FlexibleSpaceBar(
                     background: FadeIn(
                       duration: const Duration(milliseconds: 500),
@@ -99,11 +80,14 @@ class MovieDetailContent extends StatelessWidget {
                           );
                         },
                         blendMode: BlendMode.dstIn,
-                        child: CachedImages(
-                          imageUrl: ApiConstance.imageUrl(
-                              state.movieDetail!.posterPath),
-                          fit: BoxFit.fill,
-                          width: double.infinity,
+                        child: Hero(
+                          tag: hero,
+                          child: CachedImages(
+                            imageUrl: ApiConstance.imageUrl(
+                                state.movieDetail!.posterPath),
+                            fit: BoxFit.fill,
+                            width: double.infinity,
+                          ),
                         ),
                       ),
                     ),
@@ -228,7 +212,7 @@ class MovieDetailContent extends StatelessWidget {
                     ),
                   ),
                 ),
-                const RecommendationComponent(),
+                const SimilarMovie(),
               ],
             );
           case RequestState.error:

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movieapp/src/core/functions/navigator.dart';
 import 'package:movieapp/src/core/utils/app_constance.dart';
-
 import 'package:shimmer/shimmer.dart';
 
 import '../../../../../core/utils/api_constance.dart';
@@ -18,7 +17,6 @@ class CreditsComponent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<MovieDetailBloc, MovieDetailState>(
-      buildWhen: (previous, current) => previous.credits != current.credits,
       builder: (context, state) {
         return SliverPadding(
           padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 24.0),
@@ -31,12 +29,16 @@ class CreditsComponent extends StatelessWidget {
                   color: Colors.transparent,
                   width: 5,
                 ),
-                itemCount: state.credits.length,
+                itemCount: state.movieDetail!.credits.length,
                 itemBuilder: (context, index) {
-                  final credit = state.credits[index];
+                  final credit = state.movieDetail!.credits[index];
                   return InkWell(
-                    onTap: (){
-                      navigateTo(context: context, page:  CreditInfoScreen(credits: credit,));
+                    onTap: () {
+                      navigateTo(
+                          context: context,
+                          page: CreditInfoScreen(
+                            credits: credit,
+                          ));
                     },
                     child: Column(
                       children: [

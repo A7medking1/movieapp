@@ -9,26 +9,25 @@ import '../../../controller/movie_detail_bloc/movie_detail_bloc.dart';
 import '../../../widget/cached_image_widget.dart';
 import '../movie_detail_screen.dart';
 
-class RecommendationComponent extends StatelessWidget {
-  const RecommendationComponent({
+class SimilarMovie extends StatelessWidget {
+  const SimilarMovie({
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<MovieDetailBloc, MovieDetailState>(
-      buildWhen: (previous, current) => previous.recommendation != current.recommendation,
       builder: (context, state) {
         return SliverPadding(
           padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 24.0),
           sliver: SliverGrid(
             delegate: SliverChildBuilderDelegate(
               (context, index) {
-                final recommendation = state.recommendation[index];
+                final recommendation = state.movieDetail!.similar[index];
                 return InkWell(
                   onTap: () => navigateTo(
                       context: context,
-                      page: MovieDetailScreen(id: recommendation.id)),
+                      page: MovieDetailScreen(id: recommendation.id,hero: UniqueKey())),
                   child: FadeInUp(
                     from: 20,
                     duration: const Duration(milliseconds: 500),
@@ -46,7 +45,7 @@ class RecommendationComponent extends StatelessWidget {
                   ),
                 );
               },
-              childCount: state.recommendation.length,
+              childCount: state.movieDetail!.similar.length,
             ),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               mainAxisSpacing: 8.0,

@@ -42,10 +42,7 @@ class SeeMoreWidget extends StatelessWidget {
             style:
           ),*/
           InkWell(
-            onTap: onPressed ??  ()  async {
-              /// TODO : NAVIGATION TO POPULAR SCREEN
-              navigateTo(context: context, page: page!);
-            },
+            onTap: onPressed ,
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Row(

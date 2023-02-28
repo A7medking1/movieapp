@@ -1,3 +1,6 @@
+import 'package:movieapp/src/movie/data/models/credits_model.dart';
+import 'package:movieapp/src/movie/data/models/movie_model.dart';
+import 'package:movieapp/src/movie/data/models/videos_model.dart';
 
 import '../../domain/entity/movie_detail.dart';
 import 'genres_model.dart';
@@ -12,6 +15,9 @@ class MovieDetailModel extends MovieDetail {
     required super.runtime,
     required super.voteAverage,
     required super.title,
+    required super.videos,
+    required super.credits,
+    required super.similar,
   });
 
   factory MovieDetailModel.fromJson(Map<String, dynamic> json) {
@@ -25,6 +31,12 @@ class MovieDetailModel extends MovieDetail {
       runtime: json["runtime"],
       title: json["title"],
       voteAverage: json["vote_average"],
+      similar: List<MovieModel>.from(
+          json['similar']['results'].map((e) => MovieModel.fromJson(e))),
+      videos: List<VideoModel>.from(
+          json['videos']['results'].map((e) => VideoModel.fromJson(e))),
+      credits: List<CreditsModel>.from(
+          json['credits']['cast'].map((e) => CreditsModel.fromJson(e))),
     );
   }
 }

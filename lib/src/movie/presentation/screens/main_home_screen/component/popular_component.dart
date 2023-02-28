@@ -1,16 +1,11 @@
-import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movieapp/src/movie/presentation/screens/main_home_screen/component/top_rated_component.dart';
 
-import '../../../../../core/functions/navigator.dart';
-import '../../../../../core/utils/api_constance.dart';
 import '../../../../../core/utils/enums.dart';
-
 import '../../../controller/movie_bloc/movies_bloc.dart';
 import '../../../controller/movie_bloc/movies_state.dart';
-import '../../../widget/cached_image_widget.dart';
 import '../../../widget/loading_spankit.dart';
-import '../../movie_detail_screen/movie_detail_screen.dart';
 
 class PopularComponent extends StatelessWidget {
   const PopularComponent({
@@ -32,41 +27,7 @@ class PopularComponent extends StatelessWidget {
               ),
             );
           case RequestState.loaded:
-            return FadeIn(
-              duration: const Duration(milliseconds: 500),
-              child: SizedBox(
-                height: 170.0,
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  scrollDirection: Axis.horizontal,
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  itemCount: state.popularMovies.length,
-                  itemBuilder: (context, index) {
-                    final movie = state.popularMovies[index];
-                    return Container(
-                      padding: const EdgeInsets.only(right: 8.0),
-                      child: InkWell(
-                        onTap: () => navigateTo(
-                          context: context,
-                          page: MovieDetailScreen(
-                            id: movie.id,
-                          ),
-                        ),
-                        child: ClipRRect(
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(8.0)),
-                          child: CachedImages(
-                            imageUrl:
-                                ApiConstance.imageUrl(movie.backdropPath!),
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              ),
-            );
+            return MoviesCardListView(movie: state.popularMovies);
           case RequestState.error:
             return SizedBox(
               height: 170,

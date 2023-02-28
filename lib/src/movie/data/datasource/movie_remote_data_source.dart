@@ -6,20 +6,15 @@ import '../../../core/network/error_message_model.dart';
 import '../../../core/services/services_locator.dart';
 import '../../../core/utils/api_constance.dart';
 import '../../domain/usecases/credits_movie.dart';
-import '../../domain/usecases/get_credits.dart';
 import '../../domain/usecases/get_movie_by_genres.dart';
 import '../../domain/usecases/get_movie_detail.dart';
-import '../../domain/usecases/get_movie_recommendations.dart';
 import '../../domain/usecases/get_popular_movies.dart';
 import '../../domain/usecases/get_top_rated_movies.dart';
-import '../../domain/usecases/get_videos.dart';
 import '../../domain/usecases/search_movies.dart';
-import '../models/credits_model.dart';
 import '../models/genres_model.dart';
 import '../models/movie_detail_model.dart';
 import '../models/movie_model.dart';
-import '../models/recommendation_model.dart';
-import '../models/videos_model.dart';
+
 
 abstract class BaseRemoteMovieDataSource {
   Future<List<MovieModel>> getNowPlayingMovie();
@@ -30,14 +25,7 @@ abstract class BaseRemoteMovieDataSource {
 
   Future<MovieDetailModel> getMovieDetails(MovieDetailParameter parameter);
 
-  Future<List<RecommendationModel>> getRecommendations(
-      RecommendationsParameters parameter);
-
-  Future<List<CreditsModel>> getCredits(CreditsParameters parameters);
-
-  Future<List<VideoModel>> getVideos(VideoParameters parameters);
-
-  Future<List<MovieModel>> getCreditsMovie(CreditsMovieParameters parameters);
+  Future<List<MovieModel>> getCreditsMovieInfo(CreditsMovieParameters parameters);
 
   Future<List<GenresModel>> getGenres();
 
@@ -110,60 +98,11 @@ class MovieRemoteDataSource extends BaseRemoteMovieDataSource {
     }
   }
 
-  @override
-  Future<List<RecommendationModel>> getRecommendations(
-      RecommendationsParameters parameter) async {
-    final response =
-        await sl<Dio>().get(ApiConstance.recommendationsPath(parameter.id));
 
-    if (response.statusCode == 200) {
-      return List<RecommendationModel>.from(
-          (response.data["results"] as List).map(
-        (e) => RecommendationModel.fromJson(e),
-      ));
-    } else {
-      throw ServerException(
-        errorMessageModel: ErrorMessageModel.fromJson(response.data),
-      );
-    }
-  }
-
-  @override
-  Future<List<CreditsModel>> getCredits(CreditsParameters parameters) async {
-    final response =
-        await sl<Dio>().get(ApiConstance.creditsPath(parameters.id));
-
-    if (response.statusCode == 200) {
-      return List<CreditsModel>.from((response.data["cast"] as List).map(
-        (e) => CreditsModel.fromJson(e),
-      ));
-    } else {
-      throw ServerException(
-        errorMessageModel: ErrorMessageModel.fromJson(response.data),
-      );
-    }
-  }
-
-  @override
-  Future<List<VideoModel>> getVideos(VideoParameters parameters) async {
-    final response = await sl<Dio>().get(ApiConstance.videoPath(parameters.id));
-
-    if (response.statusCode == 200) {
-      return List<VideoModel>.from((response.data["results"] as List).map(
-        (e) => VideoModel.fromJson(e),
-      ));
-    } else {
-      throw ServerException(
-        errorMessageModel: ErrorMessageModel.fromJson(response.data),
-      );
-    }
-  }
-
-  @override
-  Future<List<MovieModel>> getCreditsMovie(
+  Future<List<MovieModel>> getCreditsMovieInfo(
       CreditsMovieParameters parameters) async {
     final response =
-        await sl<Dio>().get(ApiConstance.creditMoviesPath(parameters.personId));
+        await sl<Dio>().get(ApiConstance.creditMoviesInfoPath(parameters.personId));
 
     if (response.statusCode == 200) {
       return List<MovieModel>.from((response.data["cast"] as List).map(

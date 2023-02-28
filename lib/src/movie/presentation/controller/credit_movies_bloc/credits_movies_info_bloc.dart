@@ -8,9 +8,9 @@ import '../../../domain/entity/movie.dart';
 import '../../../domain/usecases/credits_movie.dart';
 
 
-part 'credits_movies_event.dart';
+part 'credits_movies_info_event.dart';
 
-part 'credits_movies_state.dart';
+part 'credits_movies_info_state.dart';
 
 class CreditsMoviesBloc extends Bloc<CreditsMoviesEvent, CreditsMoviesState> {
   CreditsMoviesBloc(this.getCreditsMovieUseCase)
