@@ -1,11 +1,12 @@
 import 'package:dio/dio.dart';
+import 'package:movieapp/src/movie/data/models/person_model.dart';
 
 
 import '../../../core/error/exception.dart';
 import '../../../core/network/error_message_model.dart';
 import '../../../core/services/services_locator.dart';
 import '../../../core/utils/api_constance.dart';
-import '../../domain/usecases/credits_movie.dart';
+import '../../domain/usecases/credits_info.dart';
 import '../../domain/usecases/get_movie_by_genres.dart';
 import '../../domain/usecases/get_movie_detail.dart';
 import '../../domain/usecases/get_popular_movies.dart';
@@ -25,7 +26,7 @@ abstract class BaseRemoteMovieDataSource {
 
   Future<MovieDetailModel> getMovieDetails(MovieDetailParameter parameter);
 
-  Future<List<MovieModel>> getCreditsMovieInfo(CreditsMovieParameters parameters);
+  Future<PersonModel> getCreditInfo(CreditInfoParameters parameters);
 
   Future<List<GenresModel>> getGenres();
 
@@ -99,15 +100,13 @@ class MovieRemoteDataSource extends BaseRemoteMovieDataSource {
   }
 
 
-  Future<List<MovieModel>> getCreditsMovieInfo(
-      CreditsMovieParameters parameters) async {
+  Future<PersonModel> getCreditInfo(
+      CreditInfoParameters parameters) async {
     final response =
-        await sl<Dio>().get(ApiConstance.creditMoviesInfoPath(parameters.personId));
+        await sl<Dio>().get(ApiConstance.creditInfoPath(parameters.personId));
 
     if (response.statusCode == 200) {
-      return List<MovieModel>.from((response.data["cast"] as List).map(
-        (e) => MovieModel.fromJson(e),
-      ));
+      return PersonModel.fromJson(response.data);
     } else {
       throw ServerException(
         errorMessageModel: ErrorMessageModel.fromJson(response.data),

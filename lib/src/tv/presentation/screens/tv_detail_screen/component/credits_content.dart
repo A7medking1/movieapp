@@ -28,7 +28,7 @@ class CreditsContent extends StatelessWidget {
                   onTap: () {
                     navigateTo(
                         context: context,
-                        page: CreditInfoScreen(credits: credits));
+                        page: CreditInfoScreen(personId: credits.id));
                   },
                   child: FadeInUp(
                     from: 20,

@@ -1,6 +1,11 @@
 class ApiConstance {
   static const String baseUrl = "https://api.themoviedb.org/3";
 
+  static const baseImageUrl = "https://image.tmdb.org/t/p/w500";
+
+  static String youtubePath(String key) =>
+      "https://www.youtube.com/watch?v=$key";
+
   static const String apiKey = "8b62c46f238dec5717dbd4169229195f";
 
   /// Movie Constant
@@ -17,9 +22,8 @@ class ApiConstance {
   static String movieDetailPath(int id) =>
       "$baseUrl/movie/$id?api_key=$apiKey&append_to_response=videos,similar,credits";
 
-
-  static String creditMoviesInfoPath(int personId) =>
-      "$baseUrl/person/$personId/movie_credits?api_key=$apiKey";
+  static String creditInfoPath(int personId) =>
+      "$baseUrl/person/$personId?api_key=$apiKey&append_to_response=movie_credits,tv_credits";
 
   static const String genresPath = "$baseUrl/genre/movie/list?api_key=$apiKey";
 
@@ -28,11 +32,6 @@ class ApiConstance {
 
   static String searchMoviesPath(String query) =>
       "https://api.themoviedb.org/3/search/movie?api_key=8b62c46f238dec5717dbd4169229195f&query=$query";
-
-  static String youtubePath(String key) =>
-      "https://www.youtube.com/watch?v=$key";
-
-  static const baseImageUrl = "https://image.tmdb.org/t/p/w500";
 
   static String imageUrl(String path) => "$baseImageUrl$path";
 

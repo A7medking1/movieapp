@@ -29,10 +29,14 @@ class DetailTvScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => sl<TvDetailBloc>()
-        ..add(GetTvDetailEvent(tvId))
-        ..add(GetTvSeasonDetailEvent(tvId: tvId, seasonNumber: 1)),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => MenuCubit()),
+        BlocProvider(
+            create: (context) => sl<TvDetailBloc>()
+              ..add(GetTvDetailEvent(tvId))
+              ..add(GetTvSeasonDetailEvent(tvId: tvId, seasonNumber: 1))),
+      ],
       child: Scaffold(
         body: TvDetailContent(hero: hero),
       ),

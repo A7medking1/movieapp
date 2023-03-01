@@ -1,12 +1,13 @@
 import 'package:dartz/dartz.dart';
 import 'package:movieapp/src/core/error/exception.dart';
 import 'package:movieapp/src/core/error/failure.dart';
+import 'package:movieapp/src/movie/domain/entity/person.dart';
 
 import '../../domain/entity/genres.dart';
 import '../../domain/entity/movie.dart';
 import '../../domain/entity/movie_detail.dart';
 import '../../domain/repository/base_movie_repository.dart';
-import '../../domain/usecases/credits_movie.dart';
+import '../../domain/usecases/credits_info.dart';
 import '../../domain/usecases/get_movie_by_genres.dart';
 import '../../domain/usecases/get_movie_detail.dart';
 import '../../domain/usecases/get_popular_movies.dart';
@@ -67,9 +68,9 @@ class MovieRepository extends BaseMovieRepository {
   }
 
   @override
-  Future<Either<Failure, List<Movie>>> getCreditsMovieInfo(
-      CreditsMovieParameters parameters) async {
-    final result = await movieRemoteDataSource.getCreditsMovieInfo(parameters);
+  Future<Either<Failure, Person>> getCreditInfo(
+      CreditInfoParameters parameters) async {
+    final result = await movieRemoteDataSource.getCreditInfo(parameters);
 
     try {
       return Right(result);

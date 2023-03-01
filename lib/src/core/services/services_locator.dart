@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
+import 'package:movieapp/src/movie/presentation/controller/credit_info_bloc/credit_info_bloc.dart';
 import 'package:movieapp/src/tv/data/datasource/tv_remote_data_source.dart';
 import 'package:movieapp/src/tv/domin/repository/base_tv_repository.dart';
 import 'package:movieapp/src/tv/domin/usecases/animation_tv_usecase.dart';
@@ -15,7 +16,7 @@ import 'package:movieapp/src/tv/presentation/controller/tv_detail_bloc/tv_detail
 import '../../movie/data/datasource/movie_remote_data_source.dart';
 import '../../movie/data/repository/movie_repository.dart';
 import '../../movie/domain/repository/base_movie_repository.dart';
-import '../../movie/domain/usecases/credits_movie.dart';
+import '../../movie/domain/usecases/credits_info.dart';
 import '../../movie/domain/usecases/get_genres.dart';
 import '../../movie/domain/usecases/get_movie_by_genres.dart';
 import '../../movie/domain/usecases/get_movie_detail.dart';
@@ -23,7 +24,6 @@ import '../../movie/domain/usecases/get_now_playing_movies.dart';
 import '../../movie/domain/usecases/get_popular_movies.dart';
 import '../../movie/domain/usecases/get_top_rated_movies.dart';
 import '../../movie/domain/usecases/search_movies.dart';
-import '../../movie/presentation/controller/credit_movies_bloc/credits_movies_info_bloc.dart';
 import '../../movie/presentation/controller/genres_bloc/genres_bloc.dart';
 import '../../movie/presentation/controller/movie_bloc/movies_bloc.dart';
 import '../../movie/presentation/controller/movie_by_genrec_bloc/movies_by_genres_bloc.dart';
@@ -46,7 +46,7 @@ class ServicesLocator {
         ));
     sl.registerFactory(() => GenresBloc(sl()));
     sl.registerFactory(() => MoviesByGenresBloc(sl()));
-    sl.registerFactory(() => CreditsMoviesBloc(sl()));
+    sl.registerFactory(() => CreditInfoBloc(sl()));
     sl.registerFactory(() => SearchBloc(sl()));
 
     /// Use Cases
@@ -54,7 +54,7 @@ class ServicesLocator {
     sl.registerLazySingleton(() => GetPopularMoviesUseCase(sl()));
     sl.registerLazySingleton(() => GetTopRatedMoviesUseCase(sl()));
     sl.registerLazySingleton(() => GetMovieDetailUseCase(sl()));
-    sl.registerLazySingleton(() => GetCreditsMovieUseCase(sl()));
+    sl.registerLazySingleton(() => GetCreditInfoUseCase(sl()));
     sl.registerLazySingleton(() => GetGenresUseCase(sl()));
     sl.registerLazySingleton(() => GetMoviesByGenresUseCase(sl()));
     sl.registerLazySingleton(() => SearchMoviesUseCase(sl()));

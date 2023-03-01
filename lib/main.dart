@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
 
-        BlocProvider(create: (context) => MenuCubit()),
+       // BlocProvider(create: (context) => MenuCubit()),
         //BlocProvider(create: (context) => sl<TvPaginationBloc>()),
         BlocProvider(
           create: (context) => sl<MoviesBloc>()

@@ -37,7 +37,7 @@ class CreditsComponent extends StatelessWidget {
                       navigateTo(
                           context: context,
                           page: CreditInfoScreen(
-                            credits: credit,
+                            personId: credit.id,
                           ));
                     },
                     child: Column(

@@ -18,4 +18,17 @@ class MenuCubit extends Cubit<MenuState> {
     print("new $newMenu");*/
     emit(UpdateMenuState());
   }
+
+
+
+  PersonInfoType currentType = PersonInfoType.movie ;
+
+  void updateInfoType(PersonShowsModel newMenu) {
+    currentType = newMenu.personInfoType;
+    /*print("current $currentMenu");
+    print("new $newMenu");*/
+    emit(UpdateMenuState());
+  }
+
+
 }

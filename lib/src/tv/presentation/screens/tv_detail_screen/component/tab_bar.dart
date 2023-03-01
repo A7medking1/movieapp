@@ -39,7 +39,6 @@ class BuildMenuButton extends StatelessWidget {
         MenuCubit cubit = MenuCubit.get(context);
         return MaterialButton(
           onPressed: () {
-            //print(menuInfoModel.menuType);
             cubit.updateMenu(menuInfoModel);
           },
           child: Padding(
@@ -70,10 +69,6 @@ class BuildMenuButton extends StatelessWidget {
                       : Colors.white,
                 )
                     : SizedBox.shrink(),
-                /*CircleAvatar(
-              radius: 10,
-              backgroundColor: Colors.red,
-            )*/
               ],
             ),
           ),

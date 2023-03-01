@@ -12,6 +12,11 @@ enum SeeMore {
   animation,
 }
 
+enum PersonInfoType {
+  tv ,
+  movie ,
+}
+
 enum MenuType {
   episodes,
   moreLikeThis,

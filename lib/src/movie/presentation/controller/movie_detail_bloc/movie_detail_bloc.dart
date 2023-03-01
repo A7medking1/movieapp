@@ -4,10 +4,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movieapp/src/core/utils/enums.dart';
 
-import '../../../domain/entity/credits.dart';
 import '../../../domain/entity/movie_detail.dart';
-import '../../../domain/entity/recommendations.dart';
-import '../../../domain/entity/videos.dart';
 import '../../../domain/usecases/get_movie_detail.dart';
 
 
