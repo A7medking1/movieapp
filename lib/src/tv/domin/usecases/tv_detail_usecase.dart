@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
-import 'package:movieapp/src/core/error/failure.dart';
+import '../../../core/error/failures.dart';
 import 'package:movieapp/src/core/use_case/base_use_case.dart';
 import 'package:movieapp/src/tv/domin/entitiy/tv_detail.dart';
 import 'package:movieapp/src/tv/domin/repository/base_tv_repository.dart';

@@ -2,9 +2,11 @@ import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movieapp/src/core/functions/navigator.dart';
+import 'package:movieapp/src/movie/presentation/controller/movie_bloc/movies_event.dart';
 
 import '../../../../../core/utils/api_constance.dart';
 import '../../../../../core/utils/enums.dart';
+import '../../../../../tv/presentation/screens/Tv_shows/Tv_shows.dart';
 import '../../../../domain/entity/movie.dart';
 import '../../../controller/movie_bloc/movies_bloc.dart';
 import '../../../controller/movie_bloc/movies_state.dart';
@@ -36,9 +38,9 @@ class TopRatedComponent extends StatelessWidget {
               movie: state.topRatedMovies,
             );
           case RequestState.error:
-            return SizedBox(
-              height: 170,
-              child: Text(state.nowPlayingMessage),
+           return CustomErrorWidget(
+              message: state.topRatedMessage,
+              onPressed: () => context.read<MoviesBloc>().add(GetTopRatedMoviesEvent()),
             );
         }
       },

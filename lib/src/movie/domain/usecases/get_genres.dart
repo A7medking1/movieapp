@@ -1,5 +1,5 @@
 import 'package:dartz/dartz.dart';
-import 'package:movieapp/src/core/error/failure.dart';
+import '../../../core/error/failures.dart';
 import 'package:movieapp/src/core/use_case/base_use_case.dart';
 
 import '../entity/genres.dart';

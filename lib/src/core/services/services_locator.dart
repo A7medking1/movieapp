@@ -1,5 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
+import 'package:movieapp/src/core/api/api_consumer.dart';
+import 'package:movieapp/src/core/api/app_interceptors.dart';
+import 'package:movieapp/src/core/api/dio_consumer.dart';
+import 'package:movieapp/src/core/utils/api_constance.dart';
 import 'package:movieapp/src/movie/presentation/controller/credit_info_bloc/credit_info_bloc.dart';
 import 'package:movieapp/src/tv/data/datasource/tv_remote_data_source.dart';
 import 'package:movieapp/src/tv/domin/repository/base_tv_repository.dart';
@@ -12,6 +16,7 @@ import 'package:movieapp/src/tv/domin/usecases/tv_detail_usecase.dart';
 import 'package:movieapp/src/tv/domin/usecases/tv_episode_detail_usecase.dart';
 import 'package:movieapp/src/tv/presentation/controller/tv_bloc/tv_bloc.dart';
 import 'package:movieapp/src/tv/presentation/controller/tv_detail_bloc/tv_detail_bloc.dart';
+import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 import '../../movie/data/datasource/movie_remote_data_source.dart';
 import '../../movie/data/repository/movie_repository.dart';
@@ -23,7 +28,7 @@ import '../../movie/domain/usecases/get_movie_detail.dart';
 import '../../movie/domain/usecases/get_now_playing_movies.dart';
 import '../../movie/domain/usecases/get_popular_movies.dart';
 import '../../movie/domain/usecases/get_top_rated_movies.dart';
-import '../../movie/domain/usecases/search_movies.dart';
+import '../../movie/domain/usecases/get_search.dart';
 import '../../movie/presentation/controller/genres_bloc/genres_bloc.dart';
 import '../../movie/presentation/controller/movie_bloc/movies_bloc.dart';
 import '../../movie/presentation/controller/movie_by_genrec_bloc/movies_by_genres_bloc.dart';
@@ -36,8 +41,6 @@ final sl = GetIt.instance;
 
 class ServicesLocator {
   void init() {
-    /// Dio
-    sl.registerLazySingleton<Dio>(() => Dio());
 
     /// Bloc
     sl.registerFactory(() => MoviesBloc(sl(), sl(), sl()));
@@ -57,14 +60,14 @@ class ServicesLocator {
     sl.registerLazySingleton(() => GetCreditInfoUseCase(sl()));
     sl.registerLazySingleton(() => GetGenresUseCase(sl()));
     sl.registerLazySingleton(() => GetMoviesByGenresUseCase(sl()));
-    sl.registerLazySingleton(() => SearchMoviesUseCase(sl()));
+    sl.registerLazySingleton(() => SearchUseCase(sl()));
 
     /// Repository
     sl.registerLazySingleton<BaseMovieRepository>(() => MovieRepository(sl()));
 
     /// data source
     sl.registerLazySingleton<BaseRemoteMovieDataSource>(
-        () => MovieRemoteDataSource());
+        () => MovieRemoteDataSource(sl()));
 
     /// *******************************************************************
 
@@ -96,6 +99,24 @@ class ServicesLocator {
 
     /// tv data source
     sl.registerLazySingleton<BaseRemoteTvDataSource>(
-        () => TvRemoteDataSource());
+        () => TvRemoteDataSource(sl()));
+
+
+    /// Dio
+    sl.registerLazySingleton<Dio>(() => Dio());
+
+
+    sl.registerLazySingleton(() => PrettyDioLogger(
+      request: false,
+      requestBody: false ,
+      requestHeader: false ,
+      responseHeader: false ,
+      responseBody: false
+    ));
+    sl.registerLazySingleton(() =>AppIntercepters());
+
+    sl.registerLazySingleton<ApiConsumer>(() => DioConsumer(client: sl()));
+
+
   }
 }

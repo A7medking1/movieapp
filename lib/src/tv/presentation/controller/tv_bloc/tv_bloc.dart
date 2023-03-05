@@ -4,8 +4,8 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:movieapp/src/tv/domin/entitiy/tv.dart';
 import 'package:movieapp/src/tv/domin/usecases/animation_tv_usecase.dart';
-import 'package:movieapp/src/tv/domin/usecases/war_tv_usecase.dart';
 import 'package:movieapp/src/tv/domin/usecases/trending_tv_show_usecase.dart';
+import 'package:movieapp/src/tv/domin/usecases/war_tv_usecase.dart';
 
 import '../../../../core/utils/enums.dart';
 import '../../../domin/usecases/popular_tv_usecase.dart';
@@ -39,15 +39,14 @@ class TvBloc extends Bloc<TvEvent, TvState> {
 
   int page = 1;
 
-  //bool isLoading = false;
+  //bo
 
   FutureOr<void> _getPopularTv(
       GetPopularTvEvent event, Emitter<TvState> emit) async {
     List<Tv> tv = [];
-   // isLoading = true;
+
     final result = await getPopularTvShowUseCase(PopularTvShowParameters(page));
 
-    print('_getPopularTv');
     result.fold(
       (l) => emit(state.copyWith(
         popularTvState: RequestState.error,
@@ -63,17 +62,13 @@ class TvBloc extends Bloc<TvEvent, TvState> {
         );
       },
     );
-   // isLoading = false;
   }
 
   FutureOr<void> _getTopRatedTv(
       GetTopRatedTvEvent event, Emitter<TvState> emit) async {
     List<Tv> tv = [];
-    //isLoading = true;
-
     final result =
         await getTopRatedTvShowUseCase(TopRatedTvShowParameters(page));
-    print('_getTopRatedTv');
     result.fold(
       (l) => emit(state.copyWith(
         topRatedTvState: RequestState.error,
@@ -84,22 +79,17 @@ class TvBloc extends Bloc<TvEvent, TvState> {
         emit(
           state.copyWith(
             topRatedTvState: RequestState.loaded,
-            topRatedTv:  state.topRatedTv+tv ,
+            topRatedTv: state.topRatedTv + tv,
           ),
         );
       },
     );
-   // isLoading = false;
   }
 
-  FutureOr<void> _getOnAirTv(
-      GetWarTvEvent event, Emitter<TvState> emit) async {
+  FutureOr<void> _getOnAirTv(GetWarTvEvent event, Emitter<TvState> emit) async {
     List<Tv> tv = [];
-  //  isLoading = true;
 
-    final result =
-        await getWarShowUseCase(OnTheAirTvShowParameters(page));
-    print('_getOnAirTv');
+    final result = await getWarShowUseCase(OnTheAirTvShowParameters(page));
     result.fold(
       (l) => emit(state.copyWith(
         onAirTvState: RequestState.error,
@@ -115,15 +105,11 @@ class TvBloc extends Bloc<TvEvent, TvState> {
         );
       },
     );
-  //  isLoading = false;
   }
 
   FutureOr<void> _getAiringTodayTv(
       GetAnimationTvEvent event, Emitter<TvState> emit) async {
     List<Tv> tv = [];
-    //isLoading = true;
-
-    print('_getAiringTodayTv');
 
     final result =
         await getAnimationTvShowUseCase(AiringTodayTvShowParameters(page));
@@ -143,18 +129,15 @@ class TvBloc extends Bloc<TvEvent, TvState> {
         );
       },
     );
-    //isLoading = false;
   }
 
   FutureOr<void> _getTrendingTv(
       GetTrendingTvEvent event, Emitter<TvState> emit) async {
     List<Tv> tv = [];
-   // isLoading = true;
 
     final result =
         await getTrendingTvShowUseCase(TrendingTvShowParameters(page));
 
-    print('_getTrendingTv');
     result.fold(
       (l) => emit(state.copyWith(
         trendingTvState: RequestState.error,
@@ -170,6 +153,5 @@ class TvBloc extends Bloc<TvEvent, TvState> {
         );
       },
     );
-   // isLoading = false;
   }
 }

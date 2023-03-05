@@ -15,10 +15,19 @@ enum SeeMore {
 enum PersonInfoType {
   tv ,
   movie ,
+  images,
 }
 
 enum MenuType {
   episodes,
   moreLikeThis,
   credits,
+}
+
+
+enum SearchType {
+  movie ,
+  tv ,
+  person ,
+  multi ,
 }

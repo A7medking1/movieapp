@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 
-import '../../../core/error/failure.dart';
+import '../../../core/error/failures.dart';
 import '../../../core/use_case/base_use_case.dart';
 import '../entity/movie.dart';
 import '../repository/base_movie_repository.dart';

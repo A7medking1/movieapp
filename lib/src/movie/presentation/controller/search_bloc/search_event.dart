@@ -10,6 +10,7 @@ abstract class SearchEvent extends Equatable {
 class GetSearchMovieEvent extends SearchEvent {
 
   final String query;
+  final SearchType searchType;
 
-  const GetSearchMovieEvent(this.query);
+  const GetSearchMovieEvent({required this.query,required this.searchType});
 }

@@ -2,7 +2,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:movieapp/src/core/use_case/base_use_case.dart';
 
-import '../../../core/error/failure.dart';
+import '../../../core/error/failures.dart';
 import '../entity/movie.dart';
 import '../repository/base_movie_repository.dart';
 

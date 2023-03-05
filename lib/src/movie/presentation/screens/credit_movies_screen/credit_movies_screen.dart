@@ -5,9 +5,11 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movieapp/src/core/utils/api_constance.dart';
+import 'package:movieapp/src/movie/data/models/person_model.dart';
 import 'package:movieapp/src/movie/domain/entity/person.dart';
 import 'package:movieapp/src/movie/presentation/widget/loading_spankit.dart';
 import 'package:movieapp/src/tv/domin/entitiy/menu_model.dart';
+import 'package:movieapp/src/tv/presentation/screens/Tv_shows/Tv_shows.dart';
 
 import '../../../../core/services/services_locator.dart';
 import '../../../../core/utils/app_constance.dart';
@@ -26,20 +28,26 @@ class CreditInfoScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(personId);
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) =>MenuCubit()),
+        BlocProvider(create: (context) => MenuCubit()),
         BlocProvider(
             create: (context) =>
                 sl<CreditInfoBloc>()..add(GetCreditInfoEvent(personId))),
       ],
-      child: CreditScreenContent(),
+      child: CreditScreenContent(
+        personId: personId,
+      ),
     );
   }
 }
 
 class CreditScreenContent extends StatelessWidget {
-  const CreditScreenContent({Key? key}) : super(key: key);
+  final int personId;
+
+  const CreditScreenContent({Key? key, required this.personId})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -69,15 +77,68 @@ class CreditScreenContent extends StatelessWidget {
                         return MovieCardGridView(
                           movie: state.person!.movie_credits,
                         );
+                      case PersonInfoType.images:
+                        return BuildPersonImageGridView(
+                          images: state.person!.images,
+                        );
                     }
                   }),
                 ],
               ),
             );
           case RequestState.error:
-            return Text(state.message);
+            return Scaffold(
+                appBar: AppBar(),
+                body: Center(
+                    child: CustomErrorWidget(
+                        onPressed: () => context
+                            .read<CreditInfoBloc>()
+                            .add(GetCreditInfoEvent(personId)),
+                        message: state.message)));
         }
       },
+    );
+  }
+}
+
+class BuildPersonImageGridView extends StatelessWidget {
+  final List<ImagesModel> images;
+
+  const BuildPersonImageGridView({
+    Key? key,
+    required this.images,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SliverPadding(
+      padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 24.0),
+      sliver: SliverGrid(
+        delegate: SliverChildBuilderDelegate(
+          (context, index) {
+            return FadeInUp(
+              from: 20,
+              duration: const Duration(milliseconds: 500),
+              child: ClipRRect(
+                borderRadius: const BorderRadius.all(Radius.circular(4.0)),
+                child: CachedImages(
+                  imageUrl: images[index].file_path != null
+                      ? ApiConstance.imageUrl(images[index].file_path!)
+                      : AppConstance.errorImage,
+                  fit: BoxFit.cover,
+                ),
+              ),
+            );
+          },
+          childCount: images.length,
+        ),
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          mainAxisSpacing: 8.0,
+          crossAxisSpacing: 8.0,
+          childAspectRatio: 0.7,
+          crossAxisCount: 3,
+        ),
+      ),
     );
   }
 }

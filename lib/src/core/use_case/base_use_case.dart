@@ -1,7 +1,9 @@
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 
-import '../error/failure.dart';
+import '../error/failures.dart';
+
+
 
 abstract class BaseUseCase<T, Parameters> {
 

@@ -10,7 +10,7 @@ import 'package:movieapp/src/tv/domin/usecases/animation_tv_usecase.dart';
 import 'package:movieapp/src/tv/domin/usecases/trending_tv_show_usecase.dart';
 import 'package:movieapp/src/tv/domin/usecases/war_tv_usecase.dart';
 
-import '../../../../core/error/failure.dart';
+import '../../../../core/error/failures.dart';
 import '../../../../core/utils/enums.dart';
 import '../../../../movie/domain/entity/movie.dart';
 import '../../../domin/usecases/popular_tv_usecase.dart';

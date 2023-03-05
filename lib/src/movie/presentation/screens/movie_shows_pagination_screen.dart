@@ -8,7 +8,6 @@ import 'package:movieapp/src/movie/domain/entity/movie.dart';
 import 'package:movieapp/src/movie/presentation/screens/movie_detail_screen/movie_detail_screen.dart';
 import 'package:movieapp/src/movie/presentation/widget/cached_image_widget.dart';
 import 'package:movieapp/src/movie/presentation/widget/loading_spankit.dart';
-import 'package:movieapp/src/tv/presentation/screens/tv_detail_screen/tv_detail_screen.dart';
 
 import '../../../core/services/services_locator.dart';
 import '../../../tv/presentation/controller/pagination_bloc/pagination_bloc.dart';

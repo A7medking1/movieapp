@@ -2,6 +2,8 @@ import 'package:animate_do/animate_do.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movieapp/src/movie/presentation/controller/movie_bloc/movies_event.dart';
+import 'package:movieapp/src/tv/presentation/screens/Tv_shows/Tv_shows.dart';
 
 import '../../../../../core/functions/navigator.dart';
 import '../../../../../core/utils/api_constance.dart';
@@ -133,10 +135,10 @@ class _NowPlayingComponentState extends State<NowPlayingComponent> {
               ),
             );
           case RequestState.error:
-            return SizedBox(
-              height: 400,
-              child: Text(state.nowPlayingMessage),
-            );
+            return CustomErrorWidget(
+              message: state.nowPlayingMessage,
+              onPressed: () => context.read<MoviesBloc>().add(GetNowPlayingMoviesEvent()),
+             );
         }
       },
     );

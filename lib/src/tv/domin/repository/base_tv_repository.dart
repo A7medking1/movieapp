@@ -3,8 +3,7 @@ import 'package:movieapp/src/tv/domin/entitiy/episodes.dart';
 import 'package:movieapp/src/tv/domin/entitiy/tv.dart';
 import 'package:movieapp/src/tv/domin/entitiy/tv_detail.dart';
 import 'package:movieapp/src/tv/domin/usecases/tv_detail_usecase.dart';
-
-import '../../../core/error/failure.dart';
+import '../../../core/error/failures.dart';
 import '../usecases/animation_tv_usecase.dart';
 import '../usecases/war_tv_usecase.dart';
 import '../usecases/popular_tv_usecase.dart';

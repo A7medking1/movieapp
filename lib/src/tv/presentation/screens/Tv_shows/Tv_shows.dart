@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movieapp/src/core/functions/navigator.dart';
 import 'package:movieapp/src/core/utils/enums.dart';
+import 'package:movieapp/src/movie/presentation/widget/custom_icon.dart';
 import 'package:movieapp/src/movie/presentation/widget/custom_text.dart';
 import 'package:movieapp/src/movie/presentation/widget/see_more_widget.dart';
 import 'package:movieapp/src/tv/presentation/controller/tv_bloc/tv_bloc.dart';
@@ -58,9 +59,9 @@ class TvShows extends StatelessWidget {
                       //tagHeroWidget: state.trendingTv,
                     );
                   case RequestState.error:
-                    return SizedBox(
-                      height: 170,
-                      child: Text(state.trendingTvMessage),
+                    return CustomErrorWidget(
+                      message: state.trendingTvMessage,
+                      onPressed: () => context.read<TvBloc>().add(GetTrendingTvEvent()),
                     );
                 }
               },
@@ -90,9 +91,9 @@ class TvShows extends StatelessWidget {
                       tvList: state.popularTv,
                     );
                   case RequestState.error:
-                    return SizedBox(
-                      height: 170,
-                      child: Text(state.trendingTvMessage),
+                    return CustomErrorWidget(
+                      message: state.popularTvMessage,
+                      onPressed: () => context.read<TvBloc>().add(GetPopularTvEvent()),
                     );
                 }
               },
@@ -122,10 +123,10 @@ class TvShows extends StatelessWidget {
                       tvList: state.topRatedTv,
                     );
                   case RequestState.error:
-                    return SizedBox(
-                      height: 170,
-                      child: Text(state.trendingTvMessage),
-                    );
+                    return CustomErrorWidget(
+                        message: state.topRatedTvMessage,
+                        onPressed: () => context.read<TvBloc>().add(GetTopRatedTvEvent()),
+                );
                 }
               },
             ),
@@ -154,9 +155,9 @@ class TvShows extends StatelessWidget {
                       tvList: state.warTv,
                     );
                   case RequestState.error:
-                    return SizedBox(
-                      height: 170,
-                      child: Text(state.trendingTvMessage),
+                    return CustomErrorWidget(
+                      message: state.warMessage,
+                      onPressed: () => context.read<TvBloc>().add(GetWarTvEvent()),
                     );
                 }
               },
@@ -186,15 +187,50 @@ class TvShows extends StatelessWidget {
                       tvList: state.animationTv,
                     );
                   case RequestState.error:
-                    return SizedBox(
-                      height: 170,
-                      child: Text(state.trendingTvMessage),
+                   return CustomErrorWidget(
+                      message: state.animationTvMessage,
+                      onPressed: () => context.read<TvBloc>().add(GetAnimationTvEvent()),
                     );
                 }
               },
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class CustomErrorWidget extends StatelessWidget {
+  final String message;
+
+  final void Function()? onPressed;
+
+  const CustomErrorWidget({
+    Key? key,
+    required this.onPressed,
+    required this.message,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 100,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            message,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+          ),
+          IconButton(
+              onPressed: onPressed,
+              icon: CustomIcon(
+                icon: Icons.refresh_outlined,
+                size: 40,
+              ))
+        ],
       ),
     );
   }

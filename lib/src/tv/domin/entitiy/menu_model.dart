@@ -38,4 +38,5 @@ class PersonShowsModel extends Equatable {
 List<PersonShowsModel> personItem = [
   PersonShowsModel(personInfoType: PersonInfoType.movie, title: 'movies'),
   PersonShowsModel(personInfoType: PersonInfoType.tv, title: 'tv'),
+  PersonShowsModel(personInfoType: PersonInfoType.images, title: 'Person Images'),
 ];
