@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:movieapp/src/movie/domain/entity/genres.dart';
 import 'package:movieapp/src/tv/data/datasource/tv_remote_data_source.dart';
 import 'package:movieapp/src/tv/domin/entitiy/episodes.dart';
 import 'package:movieapp/src/tv/domin/entitiy/tv.dart';
@@ -10,6 +11,8 @@ import 'package:movieapp/src/tv/domin/usecases/top_rated_tv_usecase.dart';
 import 'package:movieapp/src/tv/domin/usecases/trending_tv_show_usecase.dart';
 import 'package:movieapp/src/tv/domin/usecases/tv_detail_usecase.dart';
 import 'package:movieapp/src/tv/domin/usecases/tv_episode_detail_usecase.dart';
+import 'package:movieapp/src/tv/domin/usecases/tv_genres_usecase.dart';
+import 'package:movieapp/src/tv/domin/usecases/tvs_shows_by_genres_usecase.dart';
 import 'package:movieapp/src/tv/domin/usecases/war_tv_usecase.dart';
 
 import '../../../core/error/exceptions.dart';
@@ -104,6 +107,28 @@ class TvRepository extends BaseTvRepository {
 
     try {
       final result = await remoteTvDataSource.getTvSeasonDetails(parameters);
+
+      return Right(result);
+    } on ServerException catch (failure) {
+      return Left(ServerFailure(failure.errorMessageModel!.statusMessage));
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<Genres>>> getTvGenres() async{
+    try {
+      final result = await remoteTvDataSource.getTvGenres();
+
+      return Right(result);
+    } on ServerException catch (failure) {
+      return Left(ServerFailure(failure.errorMessageModel!.statusMessage));
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<Tv>>> getTvsShowsByGenres(TvsShowsByGenresParameters parameters ) async{
+    try {
+      final result = await remoteTvDataSource.getTvsShowsByGenres(parameters);
 
       return Right(result);
     } on ServerException catch (failure) {

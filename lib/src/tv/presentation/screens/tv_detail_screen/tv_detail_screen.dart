@@ -79,7 +79,9 @@ class _TvDetailContentState extends State<TvDetailContent> {
                 InformationAboutTv(
                   state: state,
                 ),
-                BuildTvDetailIcons(),
+                BuildTvDetailIcons(
+                  video: state.tvDetail!.videos,
+                ),
                 BuildCupertinoActionSheet(),
                 MenuButton(),
                 BlocBuilder<MenuCubit, MenuState>(

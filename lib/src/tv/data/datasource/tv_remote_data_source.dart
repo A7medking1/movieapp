@@ -1,12 +1,16 @@
 import 'package:movieapp/src/core/api/api_consumer.dart';
+import 'package:movieapp/src/movie/data/models/genres_model.dart';
 import 'package:movieapp/src/tv/data/models/episodes_model.dart';
 import 'package:movieapp/src/tv/data/models/tv_detail_model.dart';
 import 'package:movieapp/src/tv/data/models/tv_model.dart';
+import 'package:movieapp/src/tv/domin/entitiy/tv.dart';
 import 'package:movieapp/src/tv/domin/usecases/animation_tv_usecase.dart';
 import 'package:movieapp/src/tv/domin/usecases/top_rated_tv_usecase.dart';
 import 'package:movieapp/src/tv/domin/usecases/trending_tv_show_usecase.dart';
 import 'package:movieapp/src/tv/domin/usecases/tv_detail_usecase.dart';
 import 'package:movieapp/src/tv/domin/usecases/tv_episode_detail_usecase.dart';
+import 'package:movieapp/src/tv/domin/usecases/tv_genres_usecase.dart';
+import 'package:movieapp/src/tv/domin/usecases/tvs_shows_by_genres_usecase.dart';
 import 'package:movieapp/src/tv/domin/usecases/war_tv_usecase.dart';
 
 import '../../../core/utils/api_constance.dart';
@@ -28,6 +32,13 @@ abstract class BaseRemoteTvDataSource {
 
   Future<List<EpisodesModel>> getTvSeasonDetails(
       TvSeasonDetailParameters parameters);
+
+
+  Future<List<GenresModel>> getTvGenres ( );
+
+  Future<List<TvModel>> getTvsShowsByGenres(TvsShowsByGenresParameters parameters);
+
+
 }
 
 class TvRemoteDataSource extends BaseRemoteTvDataSource {
@@ -104,6 +115,24 @@ class TvRemoteDataSource extends BaseRemoteTvDataSource {
 
     return List<EpisodesModel>.from((response.data["episodes"] as List).map(
       (e) => EpisodesModel.fromJson(e),
+    ));
+  }
+
+  @override
+  Future<List<GenresModel>> getTvGenres() async{
+    final response = await apiConsumer.get(ApiConstance.tvGenresPath());
+
+    return List<GenresModel>.from((response.data["genres"] as List).map(
+          (e) => GenresModel.fromJson(e),
+    ));
+  }
+
+  @override
+  Future<List<TvModel>> getTvsShowsByGenres(TvsShowsByGenresParameters parameters) async{
+    final response = await apiConsumer.get(ApiConstance.tvsShowsByGenres(parameters.genresId, parameters.page));
+
+    return List<TvModel>.from((response.data['results'] as List).map(
+          (e) => TvModel.fromJson(e),
     ));
   }
 }

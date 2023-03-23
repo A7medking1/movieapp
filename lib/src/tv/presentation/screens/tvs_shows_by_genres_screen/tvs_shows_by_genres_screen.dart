@@ -1,45 +1,47 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:movieapp/src/core/functions/navigator.dart';
-import 'package:movieapp/src/core/utils/api_constance.dart';
-import 'package:movieapp/src/core/utils/enums.dart';
-import 'package:movieapp/src/movie/presentation/widget/cached_image_widget.dart';
-import 'package:movieapp/src/movie/presentation/widget/loading_spankit.dart';
-import 'package:movieapp/src/tv/domin/entitiy/tv.dart';
-import 'package:movieapp/src/tv/presentation/screens/tv_detail_screen/tv_detail_screen.dart';
+import 'package:movieapp/src/tv/presentation/controller/tv_shows_by_genres_bloc/tv_shows_by_genres_bloc.dart';
 
-import '../../../core/services/services_locator.dart';
-import '../../../core/utils/app_constance.dart';
-import '../controller/pagination_bloc/pagination_bloc.dart';
+import '../../../../core/functions/navigator.dart';
+import '../../../../core/services/services_locator.dart';
+import '../../../../core/utils/api_constance.dart';
+import '../../../../movie/presentation/widget/cached_image_widget.dart';
+import '../../../../movie/presentation/widget/loading_spankit.dart';
+import '../../../domin/entitiy/tv.dart';
+import '../tv_detail_screen/tv_detail_screen.dart';
 
-class TvShowsScreen extends StatelessWidget {
-  final SeeMore seeMore;
+class TvShowsByGenresScreen extends StatelessWidget {
+  final int genresId;
 
-  const TvShowsScreen({Key? key, required this.seeMore}) : super(key: key);
+  const TvShowsByGenresScreen({Key? key, required this.genresId})
+      : super(key: key);
 
+  @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => sl<PaginationBloc>()..add(GetTvPaginationEvent(seeMore)),
+      create: (context) =>
+          sl<TvShowsByGenresBloc>()..add(GetTvShowsByGenresEvent(genresId)),
       child: Scaffold(
-        body: TvsShowsContent(
-          seeMore: seeMore,
+        body: TvShowsByGenresContent(
+          genresId: genresId,
         ),
       ),
     );
   }
 }
 
-class TvsShowsContent extends StatefulWidget {
-  final SeeMore seeMore;
+class TvShowsByGenresContent extends StatefulWidget {
+  final int genresId;
 
-  const TvsShowsContent({Key? key, required this.seeMore}) : super(key: key);
+  const TvShowsByGenresContent({Key? key, required this.genresId})
+      : super(key: key);
 
   @override
-  State<TvsShowsContent> createState() => _TvsShowsContentState();
+  State<TvShowsByGenresContent> createState() => _TvShowsByGenresContentState();
 }
 
-class _TvsShowsContentState extends State<TvsShowsContent> {
+class _TvShowsByGenresContentState extends State<TvShowsByGenresContent> {
   ScrollController controller = ScrollController();
 
   @override
@@ -54,27 +56,24 @@ class _TvsShowsContentState extends State<TvsShowsContent> {
     controller.dispose();
   }
 
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: CustomScrollView(
-        controller: controller,
-        slivers: [
-          SliverAppBar(
-            title: Text('${widget.seeMore.name} Tvs'),
-            floating: true,
-            //snap: true,
-            //  pinned: true,
-          ),
-          BlocBuilder<PaginationBloc, PaginationState>(
-            builder: (context, state) {
-              //  print(sl<TvBloc>().page);
-              return TvSliverGridViewDataPagination(
-                list: state.tvPagination,
-              );
-            },
-          ),
-        ],
-      ),
+    return BlocBuilder<TvShowsByGenresBloc, TvShowsByGenresState>(
+      builder: (context, state) {
+        return CustomScrollView(
+          controller: controller,
+          slivers: [
+            SliverAppBar(
+              floating: true,
+              //snap: true,
+              //  pinned: true,
+            ),
+            TvSliverGridViewDataPagination(
+              list: state.tv,
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -83,8 +82,10 @@ class _TvsShowsContentState extends State<TvsShowsContent> {
     double currentScroll = controller.position.pixels;
 
     if (maxScroll == currentScroll) {
-      context.read<PaginationBloc>().page++;
-      context.read<PaginationBloc>().add(GetTvPaginationEvent(widget.seeMore));
+      context.read<TvShowsByGenresBloc>().page++;
+      context
+          .read<TvShowsByGenresBloc>()
+          .add(GetTvShowsByGenresEvent(widget.genresId));
     }
   }
 }
@@ -125,10 +126,10 @@ class TvSliverGridViewDataPagination extends StatelessWidget {
                         borderRadius:
                             const BorderRadius.all(Radius.circular(10.0)),
                         child: CachedImages(
-                          imageUrl: list[index].poster_path != null
-                              ? ApiConstance.imageUrl(list[index].poster_path!)
-                              : AppConstance.errorImage,
-                          fit: BoxFit.cover,
+                          imageUrl: ApiConstance.imageUrl(
+                            list[index].poster_path!,
+                          ),
+                          fit: BoxFit.contain,
                         ),
                       ),
                       Container(

@@ -1,9 +1,18 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:movieapp/src/core/utils/app_assets.dart';
+import 'package:movieapp/src/tv/presentation/screens/video_screen/trialers_screen.dart';
+
+import '../../../../../core/functions/navigator.dart';
+import '../../../../../movie/domain/entity/videos.dart';
 class BuildTvDetailIcons extends StatelessWidget {
+
+
+  final List<Videos> video  ;
   const BuildTvDetailIcons({
     Key? key,
+    required this.video,
   }) : super(key: key);
 
   @override
@@ -18,15 +27,15 @@ class BuildTvDetailIcons extends StatelessWidget {
           children: [
             BuildIconWidget(
               title: 'Trailer',
-              icon: 'assets/icons/video.svg',
-              onTap: () {},
+              icon: AppAssets.video,
+              onTap: () => navigateTo(context: context,page: TrailersScreen(videos: video) ),
             ),
             SizedBox(
               width: 30,
             ),
             BuildIconWidget(
               title: 'My List',
-              icon: 'assets/icons/plus.svg',
+              icon: AppAssets.plus,
               onTap: () {},
             ),
             SizedBox(
@@ -34,7 +43,7 @@ class BuildTvDetailIcons extends StatelessWidget {
             ),
             BuildIconWidget(
               title: 'Share',
-              icon: 'assets/icons/share.svg',
+              icon: AppAssets.share,
               onTap: () {},
             ),
           ],

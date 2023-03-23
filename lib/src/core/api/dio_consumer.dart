@@ -12,6 +12,11 @@ import '../services/services_locator.dart';
 import 'api_consumer.dart';
 import 'app_interceptors.dart';
 
+
+const Map<String,dynamic> defaultQuery = {
+  'api_key': '8b62c46f238dec5717dbd4169229195f',
+  'language': 'en-US',
+};
 class DioConsumer implements ApiConsumer {
   final Dio client;
 
@@ -38,7 +43,7 @@ class DioConsumer implements ApiConsumer {
   @override
   Future get(String path, {Map<String, dynamic>? queryParameters}) async {
     try {
-      final response = await client.get(path, queryParameters: queryParameters);
+      final response = await client.get(path, queryParameters:  queryParameters ?? defaultQuery);
       if (response.statusCode == 200) {
         return response;
       }
@@ -107,7 +112,7 @@ class DioConsumer implements ApiConsumer {
       case DioErrorType.cancel:
         break;
       case DioErrorType.other :
-        throw  NoInternetConnectionException(ErrorMessageModel.fromJson({'status_code' : 1 , 'status_message': 'no internet connection found' , 'success':false}));
+        throw  NoInternetConnectionException(ErrorMessageModel.fromJson({'status_code' : 1 , 'status_message': 'No internet connection found' , 'success':false}));
     }
   }
 }

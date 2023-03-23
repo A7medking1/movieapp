@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:movieapp/src/core/utils/app_assets.dart';
 import 'package:movieapp/src/movie/presentation/screens/profile_screen/profile_screen.dart';
 
 import '../../../tv/presentation/screens/Tv_shows/Tv_shows.dart';
 import 'categories_screen/categories_screen.dart';
 import 'main_home_screen/movies_screen.dart';
+import 'package:movieapp/src/search/presentation/screens/search_screen.dart';
 
 class AppLayOutScreen extends StatefulWidget {
   const AppLayOutScreen({Key? key}) : super(key: key);
@@ -16,7 +18,7 @@ class AppLayOutScreen extends StatefulWidget {
 class _AppLayOutScreenState extends State<AppLayOutScreen> {
   final List<Widget> screens = [
     const MainMoviesScreen(),
-    const CategoriesScreen(),
+    SearchScreen(),
     TvShows(),
     const ProfileScreen(),
   ];
@@ -56,7 +58,7 @@ class _AppLayOutScreenState extends State<AppLayOutScreen> {
           icon: Padding(
             padding: const EdgeInsets.only(top: 20),
             child: SvgPicture.asset(
-              'assets/icons/home.svg',
+              AppAssets.home,
               fit: BoxFit.contain,
               color: Colors.white,
               width: 20,
@@ -67,7 +69,7 @@ class _AppLayOutScreenState extends State<AppLayOutScreen> {
           activeIcon: const Padding(
             padding: EdgeInsets.only(top: 18.0),
             child: Text(
-              "Category",
+              "genres",
               style: TextStyle(color: Colors.white),
             ),
           ),
@@ -75,7 +77,7 @@ class _AppLayOutScreenState extends State<AppLayOutScreen> {
           icon: Padding(
             padding: const EdgeInsets.only(top: 20),
             child: SvgPicture.asset(
-              'assets/icons/category.svg',
+              AppAssets.genres,
               fit: BoxFit.contain,
               color: Colors.white,
               width: 20,
@@ -94,7 +96,7 @@ class _AppLayOutScreenState extends State<AppLayOutScreen> {
           icon: Padding(
             padding: const EdgeInsets.only(top: 20),
             child: SvgPicture.asset(
-              'assets/icons/tv.svg',
+              AppAssets.tv,
               fit: BoxFit.contain,
               color: Colors.white,
               width: 20,
@@ -113,7 +115,7 @@ class _AppLayOutScreenState extends State<AppLayOutScreen> {
           icon: Padding(
             padding: const EdgeInsets.only(top: 20),
             child: SvgPicture.asset(
-              'assets/icons/setting.svg',
+              AppAssets.setting,
               fit: BoxFit.contain,
               color: Colors.white,
               width: 20,

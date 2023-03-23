@@ -1,9 +1,7 @@
-import 'package:dio/dio.dart';
 import 'package:movieapp/src/core/api/api_consumer.dart';
 import 'package:movieapp/src/movie/data/models/person_model.dart';
 import 'package:movieapp/src/movie/data/models/search_model.dart';
 
-import '../../../core/services/services_locator.dart';
 import '../../../core/utils/api_constance.dart';
 import '../../domain/usecases/credits_info.dart';
 import '../../domain/usecases/get_movie_by_genres.dart';
@@ -89,7 +87,7 @@ class MovieRemoteDataSource extends BaseRemoteMovieDataSource {
 
   @override
   Future<List<GenresModel>> getGenres() async {
-    final response = await apiConsumer.get(ApiConstance.genresPath);
+    final response = await apiConsumer.get(ApiConstance.movieGenresPath());
 
     return List<GenresModel>.from((response.data["genres"] as List).map(
       (e) => GenresModel.fromJson(e),
@@ -110,7 +108,7 @@ class MovieRemoteDataSource extends BaseRemoteMovieDataSource {
   @override
   Future<List<SearchModel>> getSearch(SearchParameters parameters) async {
     final response = await apiConsumer.get(
-      ApiConstance.searchMoviesPath(parameters.query, parameters.searchType),
+      ApiConstance.searchPath(parameters.query, parameters.searchType),
     );
     return List<SearchModel>.from((response.data["results"] as List).map(
       (e) => SearchModel.fromJson(e),

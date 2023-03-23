@@ -1,10 +1,13 @@
 import 'package:dartz/dartz.dart';
+import 'package:movieapp/src/movie/domain/entity/genres.dart';
 import 'package:movieapp/src/tv/domin/entitiy/episodes.dart';
 import 'package:movieapp/src/tv/domin/entitiy/tv.dart';
 import 'package:movieapp/src/tv/domin/entitiy/tv_detail.dart';
 import 'package:movieapp/src/tv/domin/usecases/tv_detail_usecase.dart';
 import '../../../core/error/failures.dart';
 import '../usecases/animation_tv_usecase.dart';
+import '../usecases/tv_genres_usecase.dart';
+import '../usecases/tvs_shows_by_genres_usecase.dart';
 import '../usecases/war_tv_usecase.dart';
 import '../usecases/popular_tv_usecase.dart';
 import '../usecases/top_rated_tv_usecase.dart';
@@ -28,6 +31,11 @@ abstract class BaseTvRepository {
   Future<Either<Failure,TvDetail>> getTvDetail(TvDetailParameters parameters);
 
   Future<Either<Failure,List<Episodes>>> getTvEpisodesDetail(TvSeasonDetailParameters parameters);
+
+  Future<Either<Failure,List<Genres>>> getTvGenres();
+
+  Future<Either<Failure,List<Tv>>> getTvsShowsByGenres(TvsShowsByGenresParameters parameters);
+
 
 
 

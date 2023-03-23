@@ -2,11 +2,13 @@ import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movieapp/src/core/functions/navigator.dart';
+import 'package:movieapp/src/core/utils/app_constance.dart';
 import 'package:movieapp/src/core/utils/enums.dart';
 import 'package:movieapp/src/movie/presentation/widget/custom_icon.dart';
 import 'package:movieapp/src/movie/presentation/widget/custom_text.dart';
 import 'package:movieapp/src/movie/presentation/widget/see_more_widget.dart';
 import 'package:movieapp/src/tv/presentation/controller/tv_bloc/tv_bloc.dart';
+import 'package:movieapp/src/tv/presentation/screens/genres_screen/genres_screen.dart';
 
 import '../../../../core/utils/api_constance.dart';
 import '../../../../movie/presentation/widget/cached_image_widget.dart';
@@ -28,6 +30,20 @@ class TvShows extends StatelessWidget {
           text: 'TV SHOWS',
           style: TextStyle(fontSize: 20),
         ),
+        actions: [
+          InkWell(
+            onTap: () {
+              navigateTo(context: context, page: TvGenresScreen());
+            },
+            child: Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: CustomText(
+                text: 'Genres',
+                style: TextStyle(fontSize: 18),
+              ),
+            ),
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -61,7 +77,8 @@ class TvShows extends StatelessWidget {
                   case RequestState.error:
                     return CustomErrorWidget(
                       message: state.trendingTvMessage,
-                      onPressed: () => context.read<TvBloc>().add(GetTrendingTvEvent()),
+                      onPressed: () =>
+                          context.read<TvBloc>().add(GetTrendingTvEvent()),
                     );
                 }
               },
@@ -93,7 +110,8 @@ class TvShows extends StatelessWidget {
                   case RequestState.error:
                     return CustomErrorWidget(
                       message: state.popularTvMessage,
-                      onPressed: () => context.read<TvBloc>().add(GetPopularTvEvent()),
+                      onPressed: () =>
+                          context.read<TvBloc>().add(GetPopularTvEvent()),
                     );
                 }
               },
@@ -124,9 +142,10 @@ class TvShows extends StatelessWidget {
                     );
                   case RequestState.error:
                     return CustomErrorWidget(
-                        message: state.topRatedTvMessage,
-                        onPressed: () => context.read<TvBloc>().add(GetTopRatedTvEvent()),
-                );
+                      message: state.topRatedTvMessage,
+                      onPressed: () =>
+                          context.read<TvBloc>().add(GetTopRatedTvEvent()),
+                    );
                 }
               },
             ),
@@ -157,7 +176,8 @@ class TvShows extends StatelessWidget {
                   case RequestState.error:
                     return CustomErrorWidget(
                       message: state.warMessage,
-                      onPressed: () => context.read<TvBloc>().add(GetWarTvEvent()),
+                      onPressed: () =>
+                          context.read<TvBloc>().add(GetWarTvEvent()),
                     );
                 }
               },
@@ -187,9 +207,10 @@ class TvShows extends StatelessWidget {
                       tvList: state.animationTv,
                     );
                   case RequestState.error:
-                   return CustomErrorWidget(
+                    return CustomErrorWidget(
                       message: state.animationTvMessage,
-                      onPressed: () => context.read<TvBloc>().add(GetAnimationTvEvent()),
+                      onPressed: () =>
+                          context.read<TvBloc>().add(GetAnimationTvEvent()),
                     );
                 }
               },
@@ -246,53 +267,47 @@ class TvCardHorizontal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<TvBloc, TvState>(
-      buildWhen: (previous, current) =>
-          current.popularTvState != previous.popularTvState,
-      builder: (context, state) {
-        return FadeIn(
-          duration: const Duration(milliseconds: 500),
-          child: SizedBox(
-            height: 170.0,
-            child: ListView.separated(
-              shrinkWrap: true,
-              scrollDirection: Axis.horizontal,
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              itemCount: tvList.length,
-              itemBuilder: (context, index) {
-                UniqueKey _key = UniqueKey();
-                return Hero(
-                  tag: _key,
-                  child: Material(
-                    child: InkWell(
-                      onTap: () {
-                        navigateTo(
-                            context: context,
-                            page: DetailTvScreen(
-                              tvId: tvList[index].id,
-                              hero: _key,
-                            ));
-                      },
-                      child: ClipRRect(
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(8.0)),
-                        child: CachedImages(
-                          imageUrl:
-                              ApiConstance.imageUrl(tvList[index].poster_path!),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
+    return FadeIn(
+      duration: const Duration(milliseconds: 500),
+      child: SizedBox(
+        height: 170.0,
+        child: ListView.separated(
+          shrinkWrap: true,
+          scrollDirection: Axis.horizontal,
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          itemCount: tvList.length,
+          itemBuilder: (context, index) {
+            UniqueKey _key = UniqueKey();
+            return Hero(
+              tag: _key,
+              child: Material(
+                child: InkWell(
+                  onTap: () {
+                    navigateTo(
+                        context: context,
+                        page: DetailTvScreen(
+                          tvId: tvList[index].id,
+                          hero: _key,
+                        ));
+                  },
+                  child: ClipRRect(
+                    borderRadius: const BorderRadius.all(Radius.circular(8.0)),
+                    child: CachedImages(
+                      imageUrl: tvList[index].poster_path != null
+                          ? ApiConstance.imageUrl(tvList[index].poster_path!)
+                          : AppConstance.errorImage,
+                      fit: BoxFit.cover,
                     ),
                   ),
-                );
-              },
-              separatorBuilder: (context, state) => SizedBox(
-                width: 5,
+                ),
               ),
-            ),
+            );
+          },
+          separatorBuilder: (context, state) => SizedBox(
+            width: 5,
           ),
-        );
-      },
+        ),
+      ),
     );
   }
 }

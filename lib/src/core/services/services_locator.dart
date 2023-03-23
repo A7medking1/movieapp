@@ -3,19 +3,27 @@ import 'package:get_it/get_it.dart';
 import 'package:movieapp/src/core/api/api_consumer.dart';
 import 'package:movieapp/src/core/api/app_interceptors.dart';
 import 'package:movieapp/src/core/api/dio_consumer.dart';
-import 'package:movieapp/src/core/utils/api_constance.dart';
 import 'package:movieapp/src/movie/presentation/controller/credit_info_bloc/credit_info_bloc.dart';
+import 'package:movieapp/src/search/data/datasource/search_remote_data_source.dart';
+import 'package:movieapp/src/search/data/repository/search_repository.dart';
+import 'package:movieapp/src/search/domain/repository/base_search_repo.dart';
+import 'package:movieapp/src/search/domain/usecase/get_search.dart';
+import 'package:movieapp/src/search/presentation/controller/search_bloc.dart';
 import 'package:movieapp/src/tv/data/datasource/tv_remote_data_source.dart';
 import 'package:movieapp/src/tv/domin/repository/base_tv_repository.dart';
 import 'package:movieapp/src/tv/domin/usecases/animation_tv_usecase.dart';
+import 'package:movieapp/src/tv/domin/usecases/tv_genres_usecase.dart';
+import 'package:movieapp/src/tv/domin/usecases/tvs_shows_by_genres_usecase.dart';
 import 'package:movieapp/src/tv/domin/usecases/war_tv_usecase.dart';
 import 'package:movieapp/src/tv/domin/usecases/popular_tv_usecase.dart';
 import 'package:movieapp/src/tv/domin/usecases/top_rated_tv_usecase.dart';
 import 'package:movieapp/src/tv/domin/usecases/trending_tv_show_usecase.dart';
 import 'package:movieapp/src/tv/domin/usecases/tv_detail_usecase.dart';
 import 'package:movieapp/src/tv/domin/usecases/tv_episode_detail_usecase.dart';
+import 'package:movieapp/src/tv/presentation/controller/genres_bloc/genres_bloc.dart';
 import 'package:movieapp/src/tv/presentation/controller/tv_bloc/tv_bloc.dart';
 import 'package:movieapp/src/tv/presentation/controller/tv_detail_bloc/tv_detail_bloc.dart';
+import 'package:movieapp/src/tv/presentation/controller/tv_shows_by_genres_bloc/tv_shows_by_genres_bloc.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 import '../../movie/data/datasource/movie_remote_data_source.dart';
@@ -28,19 +36,27 @@ import '../../movie/domain/usecases/get_movie_detail.dart';
 import '../../movie/domain/usecases/get_now_playing_movies.dart';
 import '../../movie/domain/usecases/get_popular_movies.dart';
 import '../../movie/domain/usecases/get_top_rated_movies.dart';
-import '../../movie/domain/usecases/get_search.dart';
 import '../../movie/presentation/controller/genres_bloc/genres_bloc.dart';
 import '../../movie/presentation/controller/movie_bloc/movies_bloc.dart';
 import '../../movie/presentation/controller/movie_by_genrec_bloc/movies_by_genres_bloc.dart';
 import '../../movie/presentation/controller/movie_detail_bloc/movie_detail_bloc.dart';
-import '../../movie/presentation/controller/search_bloc/search_bloc.dart';
 import '../../tv/data/repository/tv_repository.dart';
 import '../../tv/presentation/controller/pagination_bloc/pagination_bloc.dart';
+
 
 final sl = GetIt.instance;
 
 class ServicesLocator {
   void init() {
+
+
+    sl.registerFactory(() => SearchBloc(sl()));
+    sl.registerLazySingleton(() => SearchUseCase(sl()));
+
+
+    sl.registerLazySingleton<BaseSearchRepository>(() => SearchRepository(sl()));
+    sl.registerLazySingleton<BaseRemoteSearchDataSource>(() => SearchDataSource(sl()));
+
 
     /// Bloc
     sl.registerFactory(() => MoviesBloc(sl(), sl(), sl()));
@@ -50,7 +66,10 @@ class ServicesLocator {
     sl.registerFactory(() => GenresBloc(sl()));
     sl.registerFactory(() => MoviesByGenresBloc(sl()));
     sl.registerFactory(() => CreditInfoBloc(sl()));
-    sl.registerFactory(() => SearchBloc(sl()));
+    //sl.registerFactory(() =
+
+
+
 
     /// Use Cases
     sl.registerLazySingleton(() => GetNowPlayingMoviesUseCase(sl()));
@@ -60,10 +79,12 @@ class ServicesLocator {
     sl.registerLazySingleton(() => GetCreditInfoUseCase(sl()));
     sl.registerLazySingleton(() => GetGenresUseCase(sl()));
     sl.registerLazySingleton(() => GetMoviesByGenresUseCase(sl()));
-    sl.registerLazySingleton(() => SearchUseCase(sl()));
+ //   sl.registerLazySingleton(() => SearchUseCase(sl()));
+
 
     /// Repository
     sl.registerLazySingleton<BaseMovieRepository>(() => MovieRepository(sl()));
+
 
     /// data source
     sl.registerLazySingleton<BaseRemoteMovieDataSource>(
@@ -83,7 +104,11 @@ class ServicesLocator {
           sl(),
         ));
 
+    sl.registerFactory(() => TvGenresBloc(sl()));
+
     sl.registerFactory(() => PaginationBloc(sl(), sl(), sl(), sl(), sl(),sl(),sl()));
+
+    sl.registerFactory(() => TvShowsByGenresBloc(sl()));
 
     /// tv Use Cases
     sl.registerLazySingleton(() => GetPopularTvShowUseCase(sl()));
@@ -93,6 +118,8 @@ class ServicesLocator {
     sl.registerLazySingleton(() => GetTrendingTvShowUseCase(sl()));
     sl.registerLazySingleton(() => GetTvDetailUseCase(sl()));
     sl.registerLazySingleton(() => GetTvSeasonDetailUseCase(sl()));
+    sl.registerLazySingleton(() => GetTvGenresUseCase(sl()));
+    sl.registerLazySingleton(() => GetTvsShowsByGenresUseCase(sl()));
 
     /// tv Repository
     sl.registerLazySingleton<BaseTvRepository>(() => TvRepository(sl()));

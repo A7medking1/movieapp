@@ -31,3 +31,12 @@ enum SearchType {
   person ,
   multi ,
 }
+
+enum SearchRequestState {
+
+  empty ,
+  loading ,
+  loaded ,
+  error ,
+  noResults,
+}

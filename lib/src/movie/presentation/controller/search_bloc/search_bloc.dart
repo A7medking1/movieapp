@@ -26,7 +26,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     );
   }
 
-  final SearchUseCase searchUseCase;
+  final SearchUseCaseTwo searchUseCase;
 
   FutureOr<void> _searchMovie(
       GetSearchMovieEvent event, Emitter<SearchState> emit) async {
