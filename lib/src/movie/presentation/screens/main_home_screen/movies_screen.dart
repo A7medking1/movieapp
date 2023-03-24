@@ -5,7 +5,6 @@ import 'package:movieapp/src/core/utils/enums.dart';
 import 'package:movieapp/src/movie/presentation/screens/movie_shows_pagination_screen.dart';
 
 import '../../widget/see_more_widget.dart';
-import '../search_screen/search_screen.dart';
 import 'component/now_playing_component.dart';
 import 'component/popular_component.dart';
 import 'component/top_rated_component.dart';
@@ -20,17 +19,7 @@ class MainMoviesScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text("Movie App", style: GoogleFonts.lobster(fontSize: 25)),
         actions: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: IconButton(
-              onPressed: () {
-                navigateTo(context: context, page: const SearchScreen());
-              },
-              icon: const Icon(
-                Icons.search,
-              ),
-            ),
-          ),
+
         ],
       ),
       body: SingleChildScrollView(

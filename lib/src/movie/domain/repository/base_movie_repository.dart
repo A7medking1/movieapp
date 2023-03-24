@@ -1,7 +1,6 @@
 
 import 'package:dartz/dartz.dart';
 import 'package:movieapp/src/movie/domain/entity/person.dart';
-import 'package:movieapp/src/movie/domain/entity/search.dart';
 
 import '../../../core/error/failures.dart';
 import '../entity/genres.dart';
@@ -13,7 +12,6 @@ import '../usecases/get_movie_by_genres.dart';
 import '../usecases/get_movie_detail.dart';
 import '../usecases/get_popular_movies.dart';
 import '../usecases/get_top_rated_movies.dart';
-import '../usecases/get_search.dart';
 
 abstract class BaseMovieRepository {
   Future<Either<Failure,List<Movie>>> getNowPlayingMovies();
@@ -31,5 +29,4 @@ abstract class BaseMovieRepository {
 
   Future<Either<Failure,List<Movie>>> getMoviesByGenres(MovieByGenresParameters parameters);
 
-  Future<Either<Failure,List<Search>>> getSearch(SearchParameters parameters);
 }

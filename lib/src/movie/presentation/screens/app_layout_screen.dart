@@ -69,7 +69,7 @@ class _AppLayOutScreenState extends State<AppLayOutScreen> {
           activeIcon: const Padding(
             padding: EdgeInsets.only(top: 18.0),
             child: Text(
-              "genres",
+              "Search",
               style: TextStyle(color: Colors.white),
             ),
           ),
@@ -77,7 +77,7 @@ class _AppLayOutScreenState extends State<AppLayOutScreen> {
           icon: Padding(
             padding: const EdgeInsets.only(top: 20),
             child: SvgPicture.asset(
-              AppAssets.genres,
+              AppAssets.search,
               fit: BoxFit.contain,
               color: Colors.white,
               width: 20,

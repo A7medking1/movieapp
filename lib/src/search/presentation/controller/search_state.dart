@@ -8,7 +8,7 @@ class SearchState extends Equatable {
 
   SearchState({
     this.search = const [],
-    this.status = SearchRequestState.loading,
+    this.status = SearchRequestState.empty,
     this.message = '',
   });
 

@@ -1,13 +1,11 @@
 import 'package:movieapp/src/core/api/api_consumer.dart';
 import 'package:movieapp/src/movie/data/models/person_model.dart';
-import 'package:movieapp/src/movie/data/models/search_model.dart';
 
 import '../../../core/utils/api_constance.dart';
 import '../../domain/usecases/credits_info.dart';
 import '../../domain/usecases/get_movie_by_genres.dart';
 import '../../domain/usecases/get_movie_detail.dart';
 import '../../domain/usecases/get_popular_movies.dart';
-import '../../domain/usecases/get_search.dart';
 import '../../domain/usecases/get_top_rated_movies.dart';
 import '../models/genres_model.dart';
 import '../models/movie_detail_model.dart';
@@ -28,7 +26,6 @@ abstract class BaseRemoteMovieDataSource {
 
   Future<List<MovieModel>> getMoviesByGenres(MovieByGenresParameters parameter);
 
-  Future<List<SearchModel>> getSearch(SearchParameters parameters);
 }
 
 class MovieRemoteDataSource extends BaseRemoteMovieDataSource {
@@ -105,13 +102,5 @@ class MovieRemoteDataSource extends BaseRemoteMovieDataSource {
     ));
   }
 
-  @override
-  Future<List<SearchModel>> getSearch(SearchParameters parameters) async {
-    final response = await apiConsumer.get(
-      ApiConstance.searchPath(parameters.query, parameters.searchType),
-    );
-    return List<SearchModel>.from((response.data["results"] as List).map(
-      (e) => SearchModel.fromJson(e),
-    ));
-  }
+
 }

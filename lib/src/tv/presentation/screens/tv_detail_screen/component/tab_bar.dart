@@ -37,14 +37,11 @@ class BuildMenuButton extends StatelessWidget {
     return BlocBuilder<MenuCubit, MenuState>(
       builder: (context, state) {
         MenuCubit cubit = MenuCubit.get(context);
-        return MaterialButton(
-          onPressed: () {
-            cubit.updateMenu(menuInfoModel);
-          },
-          child: Padding(
-            padding: EdgeInsetsDirectional.only(
-              start: 0,
-            ),
+        return Container(
+          child: MaterialButton(
+            onPressed: () {
+              cubit.updateMenu(menuInfoModel);
+            },
             child: Column(
               children: [
                 Text(
